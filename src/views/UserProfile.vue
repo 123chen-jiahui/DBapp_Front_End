@@ -26,7 +26,7 @@
 
         <!-- 诊断结果 -->
 
-        <v-card v-if="(state === 1)" class="mx-auto" max-width="700">
+        <v-card v-if="(state === 2)" class="mx-auto" max-width="700">
           <div>
             <headers title="新建记录"></headers>
             <div class="text-area">
@@ -66,14 +66,14 @@
                 <v-card v-if="medicineSearchedLength" class="mx-auto" max-width="350">
                   <v-list>
                     <v-list-item-group :multiple="multiple" :mandatory="mandatory" color="indigo">
-                      <v-list-item v-for="(item) in medicineSearched" :key="item.id">
+                      <v-list-item v-for="(item, index) in medicineSearched" :key="item.id">
 
-                        <v-list-item-content @click="Sayhello()">
+                        <v-list-item-content>
                           <v-list-item-title v-text="item.name"></v-list-item-title>
                         </v-list-item-content>
 
                         <v-list-item-icon>
-                          <v-icon v-text="'mdi-playlist-plus'"></v-icon>
+                          <v-icon v-text="'mdi-playlist-plus'" @click="AddToShoppingCart(index)"></v-icon>
                         </v-list-item-icon>
                       </v-list-item>
                     </v-list-item-group>
@@ -94,9 +94,8 @@
                     </v-list-item-content>
                   </v-list-item>
                 </v-list> -->
-                hello world
-                要素：搜索框输入药品关键词，按钮点击显示查找结果，查找结果中也有按钮，可以点击添加，
-                还有有一个列表显示当前选择的药品信息，每个都有个按钮表示删除。最后有个生成订单按钮
+                <!-- 要素：搜索框输入药品关键词，按钮点击显示查找结果，查找结果中也有按钮，可以点击添加，
+                还有有一个列表显示当前选择的药品信息，每个都有个按钮表示删除。最后有个生成订单按钮 -->
               </v-card>
 
             </v-col>
@@ -106,21 +105,24 @@
               <v-card max-width="350">
                 当前处方列表：
                 <v-list>
-                    <v-list-item-group :multiple="multiple" :mandatory="mandatory" color="indigo">
-                      <v-list-item v-for="(item) in medicineSearched" :key="item.id">
+                  <v-list-item-group :multiple="multiple" :mandatory="mandatory" color="indigo">
+                    <v-list-item v-for="(item, index) in shoppingCart.shoppingCartItems" :key="item.id">
 
-                        <v-list-item-content @click="Sayhello()">
-                          <v-list-item-title v-text="item.name"></v-list-item-title>
-                        </v-list-item-content>
+                      <v-list-item-content @click="Sayhello()">
+                        <v-list-item-title v-text="item.medicine.name"></v-list-item-title>
+                      </v-list-item-content>
 
-                        <v-list-item-icon>
-                          <v-icon v-text="'mdi-playlist-plus'"></v-icon>
-                        </v-list-item-icon>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
+                      <v-list-item-icon>
+                        <v-icon v-text="'mdi-trash-can-outline'" @click="RemoveFromShoppingCart(index)"></v-icon>
+                      </v-list-item-icon>
+                    </v-list-item>
+
+                  </v-list-item-group>
+                </v-list>
+                <div style="text-align:center">
+                  <v-btn color="primary" @click="GenerateOrder">生成订单</v-btn>
+                </div>
               </v-card>
-
             </v-col>
           </v-row>
 
@@ -137,17 +139,18 @@
             </h6>
 
             <h4 class="text-h4 mb-3 text--primary">
-              这里填病人姓名
+              {{patient.name}}
             </h4>
 
             <p class="text--secondary">
-              这里多行显示病人的年龄、性别。再用一段话介绍以往病史
+              年龄：{{patient.age}}
+              性别：{{patient.gender}}
             </p>
 
-            <v-btn class="mr-0" color="primary" min-width="100" rounded>
+            <v-btn v-if="!IsFirstOne()" class="mr-0" color="primary" min-width="100" rounded @click="LastOne">
               上一个
             </v-btn>
-            <v-btn class="mr-0" color="primary" min-width="100" rounded>
+            <v-btn v-if="!IsLastOne()" class="mr-0" color="primary" min-width="100" rounded @click="NextOne">
               下一个
             </v-btn>
           </v-card-text>
@@ -191,6 +194,7 @@ export default {
     medicineSearched: [], // 表示搜索药品的返回结果
     medicine: {}, // 表示选中的药物是什么
     shoppingCart: {},
+    patient: {},
 
     keyword: '',
     model: 1,
@@ -205,15 +209,17 @@ export default {
     patientId: function () { // 计算属性用函数表示
       return this.waitLine[this.patientPointer].patientId
     },
-    medicineSearchedLength: function() {
+    medicineSearchedLength: function () {
       return this.medicineSearched.length
     },
   },
   methods: {
     Sayhello() {
       alert('hello')
+      return
+      console.log('olleh')
     },
-    GetWaitLine() {
+    GetWaitLine(resolve) {
       const outerthis = this
       axios({
         method: 'get',
@@ -226,6 +232,7 @@ export default {
           console.log(response.data)
           alert('获取病人信息成功！')
           outerthis.waitLine = response.data
+          resolve()
         })
         .catch(function (error) {
           if (error.response.status === 401) {
@@ -275,17 +282,37 @@ export default {
           'Authorization': `bearer ${this.jwt}`,
         },
       })
-      .then(function(response) {
-        // console.log(response.data)
-        outerthis.shoppingCart = response.data
-        console.log(outerthis.shoppingCart)
-      })
-      .catch(function(error) {
-        if (error.response.status === 401) {
+        .then(function (response) {
+          // console.log(response.data)
+          outerthis.shoppingCart = response.data
+          console.log(outerthis.shoppingCart)
+        })
+        .catch(function (error) {
+          if (error.response.status === 401) {
             alert("用户信息过期，请重新登录")
             outerthis.$router.push({ name: 'Login' })
-        } else {
+          } else {
             alert("获取病人处方信息失败！" + error.message)
+          }
+        })
+    },
+    GetPatient() {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: `/patients/${this.patientId}`,
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function(response) {
+        outerthis.patient = response.data
+        // return response.data
+      }).catch(function(error) {
+        if (error.response.status === 401) {
+          alert("用户信息过期，请重新登录")
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert("获取病人信息失败！" + error.message)
         }
       })
     },
@@ -314,13 +341,121 @@ export default {
           }
         })
     },
-    AddToShoppingCart(i) {
-      this.shoppingCart.push(this.medicineSearched[i])
-      axios.push
+    AddToShoppingCart(i) { // 发送http请求，成功后调用GetShoppingCart函数来重新获取购物车
+      // this.shoppingCart.push(this.medicineSearched[i])
+      const outerthis = this
+      axios({
+        method: 'post',
+        url: `api/shoppingCart/items/${this.patientId}`,
+        data: {
+          Id: this.medicineSearched[i].id,
+        },
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      })
+        .then(function (response) {
+          console.log('helloworld')
+          outerthis.shoppingCart = response.data
+          console.log(outerthis.shoppingCart)
+          alert('添加处方成功')
+        })
+        .catch(function (error) {
+          if (error.response.status === 401) {
+            alert('用户信息过期，请重新登录')
+            outerthis.$router.push({ name: 'Login' })
+          } else {
+            alert('添加处方失败！' + error.message)
+          }
+        })
+    },
+    RemoveFromShoppingCart(i) {
+      const outerthis = this
+      axios({
+        method: 'delete',
+        url: `/api/shoppingCart/items/${this.patientId}/${this.shoppingCart.shoppingCartItems[i].id}`,
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      })
+        .then(function (response) {
+          alert('删除药品成功！')
+          // 两种方法都可以，这里采用第1种
+          outerthis.shoppingCart = outerthis.GetShoppingCart()
+          // outerthis.shoppingCart.shoppingCartItems.splice(i, 1)
+        })
+        .catch(function (error) {
+          if (error.response.status === 401) {
+            alert('用户信息过期，请重新登录')
+            outerthis.$router.push({ name: 'Login' })
+          } else {
+            alert('删除药品失败！' + error.message)
+          }
+        })
+    },
+    GenerateOrder() {
+      if (this.shoppingCart.shoppingCartItems.length === 0) {
+        alert('购物车为空，不能生成订单！')
+        return
+      }
+      const outerthis = this
+      axios({
+        method: 'post',
+        url: `/api/shoppingCart/checkout/${this.patientId}`,
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function() {
+        alert('订单创建成功！')
+        // 订单创建成功后需要将购物车清空
+        // 两种方法可以将购物车清空
+        // 一种是重新获取购物车
+        // 另一种是手动清空本地变量
+        // 这里采用的是第一种方法，比较保险，虽然效率比较低
+
+        outerthis.shoppingCart = outerthis.GetShoppingCart()
+      }).catch(function(error) {
+        if (error.response.status === 401) {
+          alert('用户信息过期，请重新登录')
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert('订单生成失败！' + error.message)
+        }
+      })
+    },
+    IsFirstOne() {
+      return (this.patientPointer === 0) ? true : false
+    },
+    IsLastOne() {
+      return (this.patientPointer === this.waitLine.length - 1) ? true : false
+    },
+    NextOne() {
+      if (!this.IsLastOne()) {
+        this.patientPointer += 1
+        this.GetShoppingCart()
+        this.GetPatient()
+      }
+    },
+    LastOne() {
+      if (!this.IsFirstOne()) {
+        this.patientPointer -= 1
+        this.GetShoppingCart()
+        this.GetPatient()
+      }
     }
   },
-  created() {
-    this.GetWaitLine();
+  async created() {
+    // this.GetWaitLine().then(function() {
+    //   this.GetPatient()
+    // })
+    // this.GetWaitLine()
+    // this.GetPatient()
+    let self = this
+    new Promise(function (resolve, reject) {
+      this.GetWaitLine(resolve)
+    }.bind(this)).then(function () {
+      self.GetPatient()
+    })
   }
 }
 </script>
@@ -362,5 +497,9 @@ export default {
 
 .card-all {
   width: 100%;
+}
+
+.button-middle {
+  margin: right;
 }
 </style>
