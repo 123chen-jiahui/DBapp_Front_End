@@ -139,14 +139,18 @@
             </h6>
 
             <h4 class="text-h4 mb-3 text--primary">
-              {{patient.name}}
+              {{ patient.name }}
             </h4>
 
             <p class="text--secondary">
-              年龄：{{patient.age}}
-              性别：{{patient.gender}}
+              年龄：{{ patient.age }}
             </p>
-
+            <p class="text--secondary">
+              性别：{{ patient.gender }}
+            </p>
+            <p class="text--secondary">
+              以往病史：
+            </p>
             <v-btn v-if="!IsFirstOne()" class="mr-0" color="primary" min-width="100" rounded @click="LastOne">
               上一个
             </v-btn>
@@ -304,10 +308,10 @@ export default {
         headers: {
           'Authorization': `bearer ${this.jwt}`,
         },
-      }).then(function(response) {
+      }).then(function (response) {
         outerthis.patient = response.data
         // return response.data
-      }).catch(function(error) {
+      }).catch(function (error) {
         if (error.response.status === 401) {
           alert("用户信息过期，请重新登录")
           outerthis.$router.push({ name: 'Login' })
@@ -405,7 +409,7 @@ export default {
         headers: {
           'Authorization': `bearer ${this.jwt}`,
         },
-      }).then(function() {
+      }).then(function () {
         alert('订单创建成功！')
         // 订单创建成功后需要将购物车清空
         // 两种方法可以将购物车清空
@@ -414,7 +418,7 @@ export default {
         // 这里采用的是第一种方法，比较保险，虽然效率比较低
 
         outerthis.shoppingCart = outerthis.GetShoppingCart()
-      }).catch(function(error) {
+      }).catch(function (error) {
         if (error.response.status === 401) {
           alert('用户信息过期，请重新登录')
           outerthis.$router.push({ name: 'Login' })

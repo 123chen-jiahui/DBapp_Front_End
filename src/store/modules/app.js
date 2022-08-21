@@ -14,7 +14,7 @@ const state = {
       to: '/dashboard',
     },
     {
-      title: 'User Profile',
+      title: '工作管理（门诊）',
       icon: 'mdi-account',
       to: '/components/profile/',
     },
