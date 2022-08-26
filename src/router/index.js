@@ -54,6 +54,16 @@ const router = new Router({
       component: Register,
       path: '/register',
     },
+    {
+      name: 'PurchaseList',
+      component: () => import('../views/PurchaseList.vue'),
+      path: '/purchaselist',
+    },
+    {
+      name: 'TransactionProcess',
+      component: () => import('../views/TransactionProcess.vue'),
+      path: '/transaction',
+    }
   ],
 })
 

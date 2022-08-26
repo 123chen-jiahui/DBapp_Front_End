@@ -52,6 +52,16 @@ const state = {
       title: '挂号信息',
       icon: 'mdi-bell',
       to: '/registrationinfo'
+    },
+    {
+      title: '采购管理',
+      icon: 'mdi-application-cog',
+      to: '/purchaselist'
+    },
+    {
+      title: '事务处理',
+      icon: 'mdi-axis-arrow',
+      to: '/transaction',
     }
   ],
 }
