@@ -18,7 +18,7 @@
         </v-list>
       </v-card>
     </div>
-    <view-intro heading="订单查询及缴费" link="components/alerts" />
+    <view-intro heading="订单查询及缴费" />
 
     <v-card>
       <v-tabs v-model="tab" background-color="deep-purple accent-4" centered dark icons-and-text>
@@ -53,6 +53,7 @@
             </div>
           </v-card>
           <v-card flat>
+            <!-- 可以用这种方式居中 -->
             <div style="text-align:center">
               当前病人：
             </div>
@@ -69,10 +70,50 @@
                   </v-fade-transition>
                 </template>
                 <template v-slot:append-outer>
-                  <v-btn color="primary" @click="Sayhello">
+                  <!-- 这个template用于选项卡 -->
+
+                  <v-dialog v-model="dialog" scrollable max-width="300px">
+                    <template v-slot:activator="{ on }">
+                      <!-- 这个template用于对话框 -->
+
+                      <v-btn color="primary" dark v-on="on" @click="GetPatientByName">
+                        查询详情
+                      </v-btn>
+
+                    </template>
+
+                    <v-card>
+                      <v-card-title>选择查询到的病人</v-card-title>
+                      <v-divider></v-divider>
+                      <v-card-text style="height: 300px;">
+                        <v-list>
+                          <v-list-item-group color="indigo" v-model="selectedItem">
+                            <v-list-item v-for="(item) in patientsSearched" :key="item.id" @input="SetPatientId">
+
+                              <v-list-item-content>
+                                <v-list-item-title v-text="'ID:'+item.id+'     姓名:'+item.name+'     年龄:'+item.age"></v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+
+                          </v-list-item-group>
+                        </v-list>
+                      </v-card-text>
+                      <v-divider></v-divider>
+                      <v-card-actions>
+                        <v-btn color="blue darken-1" text @click="dialog = false">
+                          关闭
+                        </v-btn>
+                        <v-btn color="blue darken-1" text @click="GetPageCountAndOrders(1)">
+                          查询详情
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+
+                  <!-- <v-btn color="primary" @click="Sayhello">
                     <v-icon>mdi-button</v-icon>
                     查询订单
-                  </v-btn>
+                  </v-btn> -->
                 </template>
               </v-text-field>
             </div>
@@ -112,7 +153,7 @@
                   <td>{{ item.id }}</td>
                   <!-- <td>{{ item.patientId }}</td> -->
                   <td>{{ StateToChinese(item.state) }}</td>
-                  <td class="text-right">{{ item.createDateUTC }}</td>
+                  <td class="text-right">{{ item.createDateUTC.slice(0, 19) }}</td>
                 </tr>
               </tbody>
             </v-simple-table>
@@ -120,8 +161,8 @@
             <!-- 实现翻页，非常重要！！！ -->
             <!-- 你需要一个监听翻页事件 -->
             <div class="text-center">
-              <v-pagination v-model="pageNumberOfAll" :length="pageCount" prev-icon="mdi-menu-left" next-icon="mdi-menu-right"
-                @input="onPageChange">
+              <v-pagination v-model="pageNumberOfAll" :length="pageCount" prev-icon="mdi-menu-left"
+                next-icon="mdi-menu-right" @input="onPageChange">
               </v-pagination>
             </div>
           </v-card-text>
@@ -151,7 +192,7 @@
                   <td>{{ item.id }}</td>
                   <!-- <td>{{ item.patientId }}</td> -->
                   <!-- <td>{{ StateToChinese(item.state) }}</td> -->
-                  <td class="text-right">{{ item.createDateUTC }}</td>
+                  <td class="text-right">{{ item.createDateUTC.slice(0, 19) }}</td>
                   <v-card>
                     <!-- 需要传入参数：本条order的id -->
                     <OrderDetail :orderId="ordersOfCurrentPageOfPending[index].id" @paid="GetOrders" />
@@ -180,6 +221,10 @@ export default {
     patientId: '',
     patientName: '',
     patient: {},
+    patientsSearched: [],
+    selectedPatientId: 0,
+
+    selectedItem: 0, // 默认选择第0个
 
     ordersOfCurrentPageOfAll: [],
     orderChosen: {},
@@ -194,8 +239,9 @@ export default {
     pageCount: 0,
 
     showModal: false,
+    dialog: false,
   }),
-  components: {OrderDetail},
+  components: { OrderDetail },
 
   computed: {
     parsedDirection() {
@@ -252,6 +298,15 @@ export default {
       alert('hello')
       this.showModal = true
     },
+    async SetPatientId(flag) {
+      // console.log('selecteditem is', this.selectedItem)
+      // console.log(flag)
+      if (flag === true) {
+        this.patientId = (this.patientsSearched[this.selectedItem].id).toString()
+        // console.log(flag)
+        // console.log('pateintId is', this.patientId)
+      }
+    },
     GetInfo() {
       if (this.GetPatient() === true) {
         console.log('cnm!!')
@@ -288,6 +343,29 @@ export default {
       })
       return false
     },
+    GetPatientByName() { // 通过关键词查找病人
+      const outerthis = this
+
+      axios({
+        method: 'get',
+        url: `/patients`,
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+        params: {
+          keyword: this.patientName,
+        },
+      }).then(function (response) {
+        outerthis.patientsSearched = response.data
+      }).catch(function (error) {
+        if (error.response.status === 401) {
+          alert('用户信息过期，请重新登录')
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert('查找病人时出错！' + error.response.data)
+        }
+      })
+    },
     GetPages(resolve) {
       const outerthis = this
       axios({
@@ -296,10 +374,10 @@ export default {
         headers: {
           'Authorization': `bearer ${this.jwt}`,
         },
-      }).then(function(response) {
-        outerthis.pageCount = Math.ceil((response.data / outerthis.pageSizeOfAll))
+      }).then(function (response) {
+        outerthis.pageCount = Math.ceil((response.data / outerthis.pageSizeOfAll)) // 向上取整有几页
         resolve()
-      }).catch(function(error) {
+      }).catch(function (error) {
         if (error.response.status === 401) {
           alert('用户信息过期，请重新登录')
           outerthis.$router.push({ name: 'Login' })
@@ -332,11 +410,14 @@ export default {
         }
       })
     },
-    async GetPageCountAndOrders() {
+    async GetPageCountAndOrders(flag = false) {
+      if(flag) {
+        this.dialog = false
+      }
       let self = this
-      new Promise(function(resolve, reject) {
+      new Promise(function (resolve, reject) {
         this.GetPages(resolve)
-      }.bind(this)).then(function() {
+      }.bind(this)).then(function () {
         self.GetOrders()
       })
     },
