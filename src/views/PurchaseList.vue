@@ -1,13 +1,8 @@
 <template>
-    <div id="pl-mian">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item>首页</el-breadcrumb-item>
-            <el-breadcrumb-item>采购管理</el-breadcrumb-item>
-            <el-breadcrumb-item v-if="!showlists">采购详情</el-breadcrumb-item>
-            <!-- <el-breadcrumb-item>活动详情</el-breadcrumb-item> -->
-        </el-breadcrumb>
-        <div style="margin-top: 15px;">
-            <el-form :inline="true">
+    <v-container>
+        <view-intro heading="采购管理" />
+        <div>
+            <el-form :inline="true" :label-position="left">
                 <el-form-item>
                     <el-input placeholder="请输入内容" v-model="searchcontent" class="input-with-select"
                         style="text-align:left">
@@ -20,12 +15,13 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item style="text-align:right">
-                    <el-button icon="el-icon-upload2" @click="createNewList()">创建新的采购单</el-button>
+                    <el-button icon="el-icon-upload2" @click="createNewList()" style="float: right;">创建新的采购单</el-button>
                 </el-form-item>
+                <el-button style="float: right;" v-if="!showlists" @click="showList()">返回</el-button>
             </el-form>
         </div>
 
-        <el-table :data="purchaselist" border height="200" style="width:100%" v-if="showlists">
+        <el-table :data="purchaselist" border height="auto" style="width:100%" v-if="showlists">
             <!-- <el-table-column prop="id" label="编号" ></el-table-column> -->
             <el-table-column prop="date" label="创建日期"></el-table-column>
             <el-table-column prop="cost" label="采购总额"></el-table-column>
@@ -39,7 +35,7 @@
         </el-table>
         <div v-if="!showsubmit">
             <div id="detail" v-if="!showlists">
-                <el-descriptions class="margin-top" title="采购单详情" :column="3" style="width:100%" border>
+                <el-descriptions class="margin-top" title="采购单详情" :column="3" border :label-position="left">
                     <el-descriptions-item span="3">
                         <template slot="label">
                             <i class="el-icon-more"></i>
@@ -49,7 +45,7 @@
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
-                            <i class="el-icon-deta"></i>
+                            <i class="el-icon-date"></i>
                             创建日期
                         </template>
                         {{ detailcontent.date }}
@@ -76,7 +72,10 @@
                         {{ detailcontent.comment }}
                     </el-descriptions-item>
                 </el-descriptions>
-                <el-table :data="detailcontent.purchaseListItems" border height="200" style="width:100%">
+                <div class="add-header">
+                    <h4>采购品详情</h4>
+                </div>
+                <el-table :data="detailcontent.purchaseListItems" border height="auto" style="width:100%">
                     <el-table-column prop="itemid" label="物品编号"></el-table-column>
                     <el-table-column prop="name" label="物品名称"></el-table-column>
                     <el-table-column prop="price" label="单价"></el-table-column>
@@ -90,7 +89,7 @@
             <AddPurchaseList @submit="(submitNewP(pl))" />
         </div>
 
-    </div>
+    </v-container>
 </template>
 
 <script>
@@ -144,12 +143,24 @@ export default {
         showList() {
             console.log("showList() start");
             let outerthis = this;
+            this.showlists = true;
+            this.showsubmit = false;
+            let URL = '';
+            if (this.searchoption === "2")
+                URL = "/" + searchcontent;
+            else if (this.searchoption === "3")
+                URL = '?staffid=' + this.searchcontent;
+            else { URL = '' }
             axios({
                 method: "get",
-                url: "/api/purchaselist",
+                url: "api/purchaselist" + URL,
             }).then(function (response) {
-                this.showlists = true;
-                this.purchaselist = response.data;
+                if (outerthis.searchoption === "2") {
+                    outerthis.purchaselist = []
+                    outerthis.purchaselist.push(response.data)
+                }
+                else
+                    outerthis.purchaselist = response.data;
                 if (response.data.length === 0) {
                     outerthis.$message({
                         message: "未查询到采购单",
@@ -217,5 +228,14 @@ export default {
 
 .input-with-select .el-input-group__prepend {
     background-color: #fff;
+}
+
+.add-header {
+    border-left: 4px solid #39a9ff;
+    padding-left: 8px;
+    line-height: initial;
+    font-size: initial;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 </style>

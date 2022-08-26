@@ -1,7 +1,8 @@
 <template>
-  <div id="trans-mian">
-    <h2 id="title">{{ hopital_name }}医院事务处理信息系统</h2>
-    <el-tabs type="card" class="demo-tabs" @tab-click="handleClick">
+  <v-container id="trans-mian">
+    <view-intro heading="事务处理" />
+    <!-- <h2 id="title">{{ hopital_name }}医院事务处理信息系统</h2> -->
+    <el-tabs type="card" class="demo-tabs">
       <el-tab-pane label="请假处理" name="first">
         <DayOff v-if="option" />
       </el-tab-pane>
@@ -9,7 +10,7 @@
         <JobOff v-if="option" />
       </el-tab-pane>
     </el-tabs>
-  </div>
+  </v-container>
 </template>
 
 <script>

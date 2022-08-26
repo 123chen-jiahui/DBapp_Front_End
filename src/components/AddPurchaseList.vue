@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div id="add-main">
     <div class="add-header">
       <h4>采购单基本信息</h4>
     </div>
-    <el-form :inline="true" :model="purchaselist" class="demo-form-inline" :column="4">
+    <el-form :inline="true" :model="purchaselist" class="demo-form-inline">
       <el-form-item label="负责人工号">
         <el-input v-model="purchaselist.staffId" placeholder="工号" />
       </el-form-item>
@@ -13,7 +13,7 @@
       <el-form-item label="采购总额">
         <el-input v-model.lazy="purchaselist.cost" />
       </el-form-item>
-      <el-form-item label="备注" :span="4">
+      <el-form-item label="备注" :span="3">
         <el-input v-model="purchaselist.comment" placeholder="请输入备注" />
       </el-form-item>
     </el-form>
@@ -21,10 +21,13 @@
       <h4>采购物品详情</h4>
     </div>
     <div id="add-items" v-for="(item, index) in purchaselistitem" :key="index">
-      <h3>采购物品{{ index + 1 }}</h3>
-      <el-form :inline="true">
+      <h4>采购物品{{ index + 1 }}</h4>
+      <el-form :inline="true" :label-position="left">
         <el-form-item label="产品号">
           <el-input v-model="item.itemid" placeholder="itemid" />
+        </el-form-item>
+        <el-form-item label="采购数量">
+          <el-input v-model.number="item.itemCount" placeholder="itemCount" />
         </el-form-item>
         <el-form-item label="类别">
           <el-select v-model="item.purchaseListItemType">
@@ -35,16 +38,13 @@
         <el-form-item label="单价">
           <el-input v-model.number="item.price" placeholder="price" />
         </el-form-item>
-        <el-form-item label="采购数量">
-          <el-input v-model.number="item.itemCount" placeholder="itemCount" />
-        </el-form-item>
         <el-form-item label="生产商">
           <el-input v-model="item.producer" placeholder="producer" />
         </el-form-item>
-      </el-form>
-      <el-form :inline="true">
+        <!-- </el-form>
+      <el-form :inline="true"> -->
         <el-form-item label="物品说明">
-          <el-input v-model="item.description" placeholder="description" style="width: 100%;" />
+          <el-input v-model="item.description" placeholder="description" style="width: 400px;" />
         </el-form-item>
       </el-form>
     </div>
@@ -61,6 +61,7 @@
 
 <script>
 export default {
+  name: 'AddPurchaseList',
   emits: ["submit"],
   data() {
     return {
@@ -154,5 +155,11 @@ export default {
   padding-left: 8px;
   line-height: initial;
   font-size: initial;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.add-main {
+  background-color: #fff;
 }
 </style>
