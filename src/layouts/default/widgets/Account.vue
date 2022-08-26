@@ -1,58 +1,106 @@
 <template>
-  <v-menu
-    bottom
-    left
-    min-width="200"
-    offset-y
-    origin="top right"
-    transition="scale-transition"
-  >
+  <v-menu bottom left min-width="200" offset-y origin="top right" transition="scale-transition">
     <template v-slot:activator="{ attrs, on }">
-      <v-btn
-        class="ml-2"
-        min-width="0"
-        text
-        v-bind="attrs"
-        v-on="on"
-      >
+      <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </template>
 
-    <v-list
-      :tile="false"
-      flat
-      nav
-    >
-      <template v-for="(p, i) in profile">
-        <v-divider
-          v-if="p.divider"
-          :key="`divider-${i}`"
-          class="mb-2 mt-2"
-        />
+    <v-list :tile="false" flat nav>
+      Id：{{user.id}}
+    </v-list>
 
-        <app-bar-item
-          v-else
-          :key="`item-${i}`"
-          to="/"
-        >
-          <v-list-item-title v-text="p.title" />
-        </app-bar-item>
-      </template>
+    <v-list :tile="false" flat nav>
+      姓名：{{user.name}}
+    </v-list>
+
+    <v-list :tile="false" flat nav>
+      年龄：{{user.age}}
+    </v-list>
+
+    <v-list :tile="false" flat nav>
+      性别：{{user.gender}}
+    </v-list>
+
+    <v-list v-if="role!='Patient'" :tile="false" flat nav>
+      身份：{{user.role}}
     </v-list>
   </v-menu>
 </template>
 
 <script>
-  export default {
-    name: 'DefaultAccount',
+import { sync } from 'vuex-pathify'
+import axios from 'axios'
+import jwtDecode from 'jwt-decode'
+export default {
+  name: 'DefaultAccount',
 
-    data: () => ({
-      profile: [
-        { title: '个人信息' },
-        { divider: true },
-        { title: '登出' },
-      ],
-    }),
+  data: () => ({
+    user: {},
+    Id: 0,
+    role: '',
+  }),
+  computed: {
+    jwt: sync('app/jwt'),
+  },
+  methods: {
+    CheckRoleAndId(resolve) {
+      const decode = jwtDecode(this.jwt)
+      const prop = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      this.role = decode[prop]
+      this.Id = decode['sub']
+      resolve()
+    },
+    GetInfo() {
+      const outerthis = this
+
+      if (this.role === 'Patient') {
+        axios({
+          method: 'get',
+          url: `/patients/${this.Id}`,
+          headers: {
+            'Authorization': `bearer ${this.jwt}`,
+          },
+        }).then(function (response) {
+          outerthis.user = response.data
+        }).catch(function (error) {
+          if (error.response.status === 401) {
+            alert('用户信息过期，请重新登录')
+            outerthis.$router.push({ name: 'Login' })
+          } else {
+            alert('用户信息获取失败！' + error.message)
+          }
+        })
+      } else {
+        axios({
+          method: 'get',
+          url: `/staff/info`,
+          headers: {
+            'Authorization': `bearer ${this.jwt}`,
+          },
+        }).then(function(response) {
+          outerthis.user = response.data
+        }).catch(function(error) {
+          if (error.response.status === 401) {
+            alert('用户信息过期，请重新登录')
+            outerthis.$router.push({ name: 'Login' })
+          } else {
+            alert('用户信息获取失败！' + error.message)
+          }
+        })
+      }
+    }
+  },
+  async created() {
+    // 判断是什么用户身份
+    // 获取用户信息
+
+    let self = this
+    new Promise(function(resolve, reject) {
+      this.CheckRoleAndId(resolve)
+    }.bind(this)).then(function() {
+      self.GetInfo()
+    })
   }
+}
 </script>
