@@ -28,7 +28,7 @@ const router = new Router({
     layout('Default', [
       route('Dashboard'),
       // Pages
-      route('UserProfile', null, 'components/profile'),
+      route('Clinic', null, 'clinic'),
 
       // Components
       route('Notifications', null, 'components/notifications'),

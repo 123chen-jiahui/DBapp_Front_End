@@ -16,7 +16,7 @@ const state = {
     {
       title: '工作管理（门诊）',
       icon: 'mdi-account',
-      to: '/components/profile/',
+      to: '/clinic',
     },
     {
       title: 'Regular Tables',
@@ -39,7 +39,7 @@ const state = {
       to: '/maps/google/',
     },
     {
-      title: 'Notifications',
+      title: '订单缴费',
       icon: 'mdi-bell',
       to: '/components/notifications/',
     },
