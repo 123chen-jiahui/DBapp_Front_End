@@ -44,7 +44,7 @@
                   </v-fade-transition>
                 </template>
                 <template v-slot:append-outer>
-                  <v-btn color="primary" @click="GetOrders">
+                  <v-btn color="primary" @click="GetPageCountAndOrders">
                     <v-icon>mdi-button</v-icon>
                     查询订单
                   </v-btn>
@@ -120,7 +120,7 @@
             <!-- 实现翻页，非常重要！！！ -->
             <!-- 你需要一个监听翻页事件 -->
             <div class="text-center">
-              <v-pagination v-model="pageNumberOfAll" :length="8" prev-icon="mdi-menu-left" next-icon="mdi-menu-right"
+              <v-pagination v-model="pageNumberOfAll" :length="pageCount" prev-icon="mdi-menu-left" next-icon="mdi-menu-right"
                 @input="onPageChange">
               </v-pagination>
             </div>
@@ -190,6 +190,8 @@ export default {
 
     pageNumberOfPending: 1,
     pageSizeOfPending: 7,
+
+    pageCount: 0,
 
     showModal: false,
   }),
@@ -286,6 +288,26 @@ export default {
       })
       return false
     },
+    GetPages(resolve) {
+      const outerthis = this
+      axios({
+        methods: 'get',
+        url: `/api/orders/forDoctor/${this.patientId}/count`,
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function(response) {
+        outerthis.pageCount = Math.ceil((response.data / outerthis.pageSizeOfAll))
+        resolve()
+      }).catch(function(error) {
+        if (error.response.status === 401) {
+          alert('用户信息过期，请重新登录')
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert('获取页面数失败！' + error.response.data)
+        }
+      })
+    },
     GetOrders() {
       const outerthis = this
       axios({
@@ -308,6 +330,14 @@ export default {
         } else {
           alert('获取订单失败！' + error.response.data)
         }
+      })
+    },
+    async GetPageCountAndOrders() {
+      let self = this
+      new Promise(function(resolve, reject) {
+        this.GetPages(resolve)
+      }.bind(this)).then(function() {
+        self.GetOrders()
       })
     },
     StateToChinese(s) {
