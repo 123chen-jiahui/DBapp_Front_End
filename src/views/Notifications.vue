@@ -1,402 +1,368 @@
+<!-- 获取病人历史订单的api还要增加一些检查的功能 -->
+<!-- 新增一个返回有几条历史订单数据的api -->
 <template>
-  <v-container
-    id="alerts"
-    fluid
-    tag="section"
-  >
-    <view-intro
-      heading="Notifications"
-      link="components/alerts"
-    />
+  <v-container id="alerts" fluid tag="section">
+    <div class="mask" v-if="showModal" @click="showModal = false"></div>
+    <div class="pop" v-if="showModal">
+      <div style="text-align:center">
+        <h2>订单详情</h2>
+      </div>
+      <v-card max-width="450" class="mx-auto">
+        <v-list>
+          <v-list-item>
+            hello
+          </v-list-item>
+          <v-list-item>
+            world
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </div>
+    <view-intro heading="订单查询及缴费" link="components/alerts" />
+
+    <v-card>
+      <v-tabs v-model="tab" background-color="deep-purple accent-4" centered dark icons-and-text>
+        <v-tabs-slider></v-tabs-slider>
+
+        <v-tab href="#tab-1">
+          根据Id查找
+        </v-tab>
+
+        <v-tab href="#tab-2">
+          根据姓名查找
+        </v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item :value="'tab-1'">
+          <v-card flat>
+            <div class="text-length">
+              <v-text-field v-model="patientId" clearable label="病人Id" type="text">
+                <template v-slot:append>
+                  <v-fade-transition leave-absolute>
+                    <v-progress-circular v-if="loading" size="15" color="info" indeterminate></v-progress-circular>
+                  </v-fade-transition>
+                </template>
+                <template v-slot:append-outer>
+                  <v-btn color="primary" @click="GetOrders">
+                    <v-icon>mdi-button</v-icon>
+                    查询订单
+                  </v-btn>
+                </template>
+              </v-text-field>
+            </div>
+          </v-card>
+          <v-card flat>
+            <div style="text-align:center">
+              当前病人：
+            </div>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab-item :value="'tab-2'">
+          <v-card flat>
+            <div class="text-length">
+              <v-text-field v-model="patientName" clearable label="病人姓名" type="text">
+                <template v-slot:append>
+                  <v-fade-transition leave-absolute>
+                    <v-progress-circular v-if="loading" size="15" color="info" indeterminate></v-progress-circular>
+                  </v-fade-transition>
+                </template>
+                <template v-slot:append-outer>
+                  <v-btn color="primary" @click="Sayhello">
+                    <v-icon>mdi-button</v-icon>
+                    查询订单
+                  </v-btn>
+                </template>
+              </v-text-field>
+            </div>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card>
+
 
     <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <app-card>
           <v-card-text>
             <div class="text-h5 text--primary">
-              Notification Style
+              全部订单
             </div>
 
-            <material-alert
-              color="info"
-              dark
-            >
-              This is a plain notification.
-            </material-alert>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th class="primary--text">
+                    单号
+                  </th>
+                  <!-- <th class="primary--text">
+                    病人姓名
+                  </th> -->
+                  <th class="primary--text">
+                    状态
+                  </th>
+                  <th class="text-right primary--text">
+                    创建时间
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item) in ordersOfCurrentPageOfAll" :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <!-- <td>{{ item.patientId }}</td> -->
+                  <td>{{ StateToChinese(item.state) }}</td>
+                  <td class="text-right">{{ item.createDateUTC }}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
 
-            <material-alert
-              color="info"
-              dark
-              dismissible
-            >
-              This is a notification with close button.
-            </material-alert>
-
-            <material-alert
-              color="info"
-              dark
-              dismissible
-              icon="mdi-bell"
-            >
-              This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification. So you don't have to worry about the style.
-            </material-alert>
-
-            <material-alert
-              color="primary"
-              dark
-              dismissible
-              icon="mdi-bell"
-            >
-              You can see that the icon and the close button are always vertically aligned. This is a beautiful notification. So you don't have to worry about the style.
-            </material-alert>
+            <!-- 实现翻页，非常重要！！！ -->
+            <!-- 你需要一个监听翻页事件 -->
+            <div class="text-center">
+              <v-pagination v-model="pageNumberOfAll" :length="8" prev-icon="mdi-menu-left" next-icon="mdi-menu-right"
+                @input="onPageChange">
+              </v-pagination>
+            </div>
           </v-card-text>
         </app-card>
       </v-col>
 
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <app-card>
           <v-card-text>
             <div class="text-h5 text--primary">
-              Notification States
+              未支付
             </div>
 
-            <material-alert
-              v-for="color in colors"
-              :key="color"
-              :color="color"
-              dark
-              dismissible
-            >
-              <span
-                class="text-uppercase text-caption font-weight-medium"
-                v-text="color"
-              /> — This is a regular alert made with the color of "{{ color }}"
-            </material-alert>
-
-            <material-alert
-              color="secondary"
-              dark
-              dismissible
-            >
-              <span class="text-caption font-weight-medium">PRIMARY</span> — This is a regular alert made with the color "secondary"
-            </material-alert>
-
-            <material-alert
-              color="pink darken-1"
-              dark
-              dismissible
-            >
-              <span class="text-caption font-weight-medium">PINK DARKEN-1</span> — This is a regular alert made with the color "pink darken-1"
-            </material-alert>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th class="primary--text">
+                    单号
+                  </th>
+                  <th class="text-right primary--text">
+                    创建时间
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in ordersOfCurrentPageOfPending" :key="item.id" @click="Sayhello">
+                  <td>{{ item.id }}</td>
+                  <!-- <td>{{ item.patientId }}</td> -->
+                  <!-- <td>{{ StateToChinese(item.state) }}</td> -->
+                  <td class="text-right">{{ item.createDateUTC }}</td>
+                  <v-card>
+                    <!-- 需要传入参数：本条order的id -->
+                    <OrderDetail :orderId="ordersOfCurrentPageOfPending[index].id" @paid="GetOrders" />
+                  </v-card>
+                </tr>
+              </tbody>
+            </v-simple-table>
           </v-card-text>
         </app-card>
       </v-col>
 
-      <v-col cols="12">
-        <app-card>
-          <v-card-text class="text-center">
-            <div class="text-h5 text--primary">
-              Snackbar Locations
-            </div>
-
-            <v-row justify="center">
-              <v-col
-                cols="10"
-                lg="8"
-              >
-                <v-row>
-                  <v-col
-                    v-for="dir in directions"
-                    :key="dir"
-                    cols="4"
-                  >
-                    <v-btn
-                      color="secondary"
-                      default
-                      class="v-btn--block"
-                      @click="randomColor(), direction = dir, snackbar = true"
-                    >
-                      {{ dir }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-
-            <v-row
-              class="mt-n12"
-              justify="center"
-            >
-              <v-col
-                cols="10"
-                lg="8"
-              >
-                <v-row class="mt-5">
-                  <v-col cols="4">
-                    <v-btn
-                      color="secondary"
-                      default
-                      rounded
-                      @click="dialog = true"
-                    >
-                      Classic Dialog
-                    </v-btn>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-btn
-                      color="info"
-                      default
-                      rounded
-                      @click="dialog2 = true"
-                    >
-                      Notice Modal
-                    </v-btn>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-btn
-                      color="pink darken-1"
-                      dark
-                      default
-                      rounded
-                      @click="dialog3 = true"
-                    >
-                      Small Alert Modal
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </app-card>
-      </v-col>
     </v-row>
-
-    <material-snackbar
-      v-model="snackbar"
-      :type="color"
-      timeout="-1"
-      v-bind="{
-        [parsedDirection[0]]: true,
-        [parsedDirection[1]]: true
-      }"
-    >
-      Welcome to <span class="font-weight-bold">&nbsp;MATERIAL DASHBOARD PRO&nbsp;</span> — a beautiful admin panel for every web developer.
-    </material-snackbar>
-
-    <v-dialog
-      v-model="dialog"
-      max-width="500"
-    >
-      <v-card class="text-center">
-        <v-card-title>
-          Dialog Title
-
-          <v-spacer />
-
-          <v-icon
-            aria-label="Close"
-            @click="dialog = false"
-          >
-            mdi-close
-          </v-icon>
-        </v-card-title>
-
-        <v-card-text>
-          Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer />
-
-          <v-btn
-            color="error"
-            text
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog
-      v-model="dialog2"
-      max-width="500"
-    >
-      <v-card>
-        <v-card-title>
-          How do you become an affiliate?
-
-          <v-spacer />
-
-          <v-icon
-            aria-label="Close"
-            @click="dialog2 = false"
-          >
-            mdi-close
-          </v-icon>
-        </v-card-title>
-
-        <v-card-text class="text-body-1 text-center">
-          <v-row>
-            <v-col
-              cols="12"
-              md="8"
-            >
-              <div>
-                <div>
-                  <strong>1. Register</strong>
-                </div>
-
-                <div class="grey--text">
-                  The first step is to create an account at Creative Tim. You can choose a social network or go for the classic version, whatever works best for you.
-                </div>
-              </div>
-            </v-col>
-
-            <v-col
-              class="hidden-sm-and-down"
-              md="4"
-            >
-              <v-sheet>
-                <v-img
-                  src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/card-1.jpg"
-                  height="100"
-                  width="200"
-                />
-              </v-sheet>
-            </v-col>
-
-            <v-col
-              cols="12"
-              md="8"
-            >
-              <div>
-                <div>
-                  <strong>2. Apply</strong>
-                </div>
-
-                <div class="grey--text">
-                  The first step is to create an account at <a href="http://www.creative-tim.com/">Creative Tim</a>. You can choose a social network or go for the classic version, whatever works best for you.
-                </div>
-              </div>
-            </v-col>
-
-            <v-col
-              class="hidden-sm-and-down"
-              md="4"
-            >
-              <v-sheet>
-                <v-img
-                  src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/card-2.jpg"
-                  height="100"
-                  width="200"
-                />
-              </v-sheet>
-            </v-col>
-
-            <v-col cols="12">
-              If you have more questions, don't hesitate to contact us or send us a tweet @creativetim. We're here to help!
-            </v-col>
-          </v-row>
-
-          <v-btn
-            class="mt-6"
-            color="info"
-            depressed
-            default
-            rounded
-            @click="dialog2 = false"
-          >
-            Sounds good
-          </v-btn>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog
-      v-model="dialog3"
-      max-width="300"
-    >
-      <v-card>
-        <v-card-title>
-          Are you sure?
-
-          <v-spacer />
-
-          <v-icon
-            aria-label="Close"
-            @click="dialog3 = false"
-          >
-            mdi-close
-          </v-icon>
-        </v-card-title>
-
-        <v-card-text class="pb-6 pt-12 text-center">
-          <v-btn
-            class="mr-3"
-            text
-            @click="dialog3 = false"
-          >
-            Nevermind
-          </v-btn>
-
-          <v-btn
-            color="success"
-            text
-            @click="dialog3 = false"
-          >
-            Yes
-          </v-btn>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-  export default {
-    name: 'NotificationsView',
+import { sync } from 'vuex-pathify'
+import axios from 'axios'
+import OrderDetail from '../components/OrderDetail.vue'
+export default {
+  name: 'NotificationsView',
 
-    data: () => ({
-      color: 'info',
-      colors: [
-        'info',
-        'success',
-        'warning',
-        'error',
-      ],
-      dialog: false,
-      dialog2: false,
-      dialog3: false,
-      direction: 'top center',
-      directions: [
-        'top left',
-        'top center',
-        'top right',
-        'bottom left',
-        'bottom center',
-        'bottom right',
-      ],
-      snackbar: false,
-    }),
+  data: () => ({
+    tab: null,
 
-    computed: {
-      parsedDirection () {
-        return this.direction.split(' ')
-      },
+    patientId: '',
+    patientName: '',
+    patient: {},
+
+    ordersOfCurrentPageOfAll: [],
+    orderChosen: {},
+    // ordersOfCurrentPageOfPending: [],
+
+    pageNumberOfAll: 1,
+    pageSizeOfAll: 7,
+
+    pageNumberOfPending: 1,
+    pageSizeOfPending: 7,
+
+    showModal: false,
+  }),
+  components: {OrderDetail},
+
+  computed: {
+    parsedDirection() {
+      return this.direction.split(' ')
     },
-
-    methods: {
-      randomColor () {
-        this.color = this.colors[Math.floor(Math.random() * this.colors.length)]
-      },
+    jwt: sync('app/jwt'),
+    ordersOfCurrentPageOfPending: function () {
+      var res = []
+      this.ordersOfCurrentPageOfAll.forEach(item => {
+        if (item.state === 'Pending') {
+          res.push(item)
+        }
+      })
+      return res
+      // for (let item in this.ordersOfCurrentPageOfAll) {
+      //   console.log(item.state)
+      //   if (item.state === 'Pending') {
+      //     res.push(item)
+      //   }
+      // }
+      // return res
     },
-  }
+  },
+
+  methods: {
+    // 捕获页面变化事件
+    async onPageChange(page) {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: `/api/orders/forDoctor/${this.patientId}`,
+        params: {
+          pageNumber: this.pageNumberOfAll,
+          pageSize: this.pageSizeOfAll,
+        },
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function (response) {
+        // alert('订单获取成功')
+        outerthis.ordersOfCurrentPageOfAll = response.data
+      }).catch(function (error) {
+        if (error.response.status === 401) {
+          alert('用户信息过期，请重新登录')
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert('获取订单失败！' + error.response.data)
+        }
+      })
+      // console.log('page is', page)
+      // console.log('pageNumberOfAll is', this.pageNumberOfAll)
+    },
+    Sayhello() {
+      alert('hello')
+      this.showModal = true
+    },
+    GetInfo() {
+      if (this.GetPatient() === true) {
+        console.log('cnm!!')
+        this.GetOrders()
+      }
+      console.log('cnm!!!')
+      // this.GetPatient()
+      // this.GetOrders()
+    },
+    GetPatient() {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: `/patients/${this.patientId}`,
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function (response) {
+        if (response.status === 204) {
+          alert('不存在该病人')
+          return false
+        }
+        outerthis.patient = response.data
+        console.log('cnm')
+        return true
+      }).catch(function (error) {
+        console.log('cnm!')
+        if (error.response.status === 401) {
+          alert('用户信息过期，请重新登录')
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert('获取病人信息失败！' + error.response.data)
+        }
+      })
+      return false
+    },
+    GetOrders() {
+      const outerthis = this
+      axios({
+        methods: 'get',
+        url: `/api/orders/forDoctor/${this.patientId}`,
+        params: {
+          pageNumber: this.pageNumberOfAll,
+          pageSize: this.pageSizeOfAll,
+        },
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function (response) {
+        alert('订单获取成功！')
+        outerthis.ordersOfCurrentPageOfAll = response.data
+      }).catch(function (error) {
+        if (error.response.status === 401) {
+          alert('用户信息过期，请重新登录')
+          outerthis.$router.push({ name: 'Login' })
+        } else {
+          alert('获取订单失败！' + error.response.data)
+        }
+      })
+    },
+    StateToChinese(s) {
+      if (s === 'Pending') {
+        return '未支付'
+      } else if (s === 'Completed') {
+        return '已完成'
+      } else if (s === 'Processing') {
+        return '处理中'
+      } else if (s === 'Cancelled') {
+        return '已取消'
+      } else if (s === 'Declined') {
+        return '已失败'
+      } else {
+        return '已退单'
+      }
+    },
+    DropGarbage() {
+      for (item in this.ordersOfCurrentPageOfAll) {
+        item.createDateUTC = item.createDateUTC.slice(0, 19)
+      }
+    }
+  },
+}
 </script>
+
+<style scoped>
+.text-length {
+  width: 30%;
+  margin: auto;
+}
+
+.text-length2 {
+  margin: auto;
+}
+
+.mask {
+  background-color: #000;
+  opacity: 0.3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1
+}
+
+.pop {
+  background-color: #fff;
+
+  position: fixed;
+  top: 150px;
+  left: 350px;
+  width: calc(100% - 700px);
+  height: calc(100% - 300px);
+  z-index: 2
+}
+</style>
