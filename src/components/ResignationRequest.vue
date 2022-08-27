@@ -15,9 +15,9 @@
         </v-card>
         <br />
         <material-card icon="mdi-clipboard-text" icon-small title="离职申请" color="accent">
-            <div style="text-align:center">
+            <!-- <div style="text-align:center">
                 <v-btn color="primary" @click="GetResignation">显示离职记录</v-btn>
-            </div>
+            </div> -->
             <v-simple-table>
                 <thead>
                     <tr>
@@ -59,6 +59,9 @@ export default {
         message: '',
         Resignations: [],
     }),
+    mounted: function () {
+        this.GetResignation()
+    },
     computed: {
         jwt: sync('app/jwt'),
     },

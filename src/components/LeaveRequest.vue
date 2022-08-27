@@ -40,9 +40,9 @@
         </v-card>
         <br />
         <material-card icon="mdi-clipboard-text" icon-small title="请假记录" color="accent">
-            <div style="text-align:center">
+            <!-- <div style="text-align:center">
                 <v-btn color="primary" @click="GetLeaves">显示请假记录</v-btn>
-            </div>
+            </div> -->
             <v-simple-table>
                 <thead>
                     <tr>
@@ -92,6 +92,9 @@ export default {
         message: '',
         LeaveRequest: [],
     }),
+    mounted: function () {
+        this.GetLeaves()
+    },
     computed: {
         jwt: sync('app/jwt'),
     },

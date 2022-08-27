@@ -1,9 +1,9 @@
 <template>
   <v-container id="basic-info-view" fluid tag="section">
     <material-card icon="mdi-clipboard-text" icon-small title="基本信息" color="accent">
-      <div style="text-align:center">
+      <!-- <div style="text-align:center">
         <v-btn color="primary" @click="GetSchedules">显示排班信息</v-btn>
-      </div>
+      </div> -->
       <v-simple-table>
         <thead>
           <tr>
@@ -52,6 +52,9 @@ export default {
       Timeslots: [],
     }
   },
+  mounted: function () {
+    this.GetSchedules()
+  },
   computed: {
     jwt: sync('app/jwt'),
   },
@@ -76,7 +79,7 @@ export default {
       console.log("got it! jwt is", this.jwt)
       axios({
         method: 'get',
-        url: '/time_slot',
+        url: '/time_slot'+`${timeSlotId}`,
       })
         .then(function (response) {
           outerthis.Timeslots = response.data;
@@ -84,12 +87,6 @@ export default {
         .catch(function (error) {
           alert("找不到您的上班时间段！" + error.message);
         })
-      for(let i = 0;;i++){
-        if(Timeslots[i].timeSlotId === timeSlotId){
-          return i;
-          break;
-        }
-      }
     },
     DayToChinese(day) {
       if (day === 0) {
