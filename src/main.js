@@ -58,6 +58,14 @@ Vue.prototype.showMessage = function(message, type = 'success') {
   })
 }
 
+// 用于和后台交互，发送请求
+import axios from 'axios' 
+
+// 设置全局变量
+import global_ from './base.vue'
+Vue.prototype.GLOBAL = global_;
+axios.defaults.baseURL=global_.BASE_URL;
+
 
 new Vue({
   router,
