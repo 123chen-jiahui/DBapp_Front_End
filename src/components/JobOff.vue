@@ -71,7 +71,7 @@ export default {
       let outerthis = this;
       axios({
         method: "post",
-        url: "/api/resign/approve",
+        url: "/resign/approve",
         data: {
           Id: outerthis.jobofflist[index].id,
           State: state,
@@ -99,7 +99,7 @@ export default {
       let outerthis = this;
       axios({
         method: "get",
-        url: "/api/resign/history",
+        url: "/resign/history",
         headers: {
           Authorization: `bearer ${this.jwt}`,
         },
@@ -126,7 +126,7 @@ export default {
       let outerthis = this;
       axios({
         method: "get",
-        url: "/api/resign/approveList",
+        url: "/resign/approveList",
         headers: {
           Authorization: `bearer ${this.jwt}`,
         },
