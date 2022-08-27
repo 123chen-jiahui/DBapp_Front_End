@@ -26,7 +26,7 @@
 
       <v-divider class="mx-3 mb-2" />
 
-      <default-list :items="items" />
+      <default-list :items="JudgeAccountType(items)" />
     </div>
 
     <!-- <template #append>
@@ -63,6 +63,7 @@
 <script>
   // Utilities
   import { get, sync } from 'vuex-pathify'
+  import jwtDecode from 'jwt-decode'
 
   export default {
     name: 'DefaultDrawer',
@@ -87,12 +88,49 @@
       ...get('app', [
         'items',
         'version',
+        'jwt',
       ]),
       ...sync('app', [
         'drawer',
         'drawerImage',
         'mini',
       ]),
+    },
+
+    methods: {
+      JudgeAccountType (item) {
+        const decode = jwtDecode(this.jwt)
+        const prop = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        const role = decode[prop]
+        // console.log(decode[prop])
+        // 各个用户索引
+        const PatientItem = [7, 8, 11]
+        const AdminItem = [9, 10]
+        const DoctorItem = [1, 12, 13]
+        const MedicineTokenItem = [6, 12, 13]
+        const ret = []
+        // 赋值
+        if (role === 'Patient') {
+          PatientItem.forEach(function (ele) {
+            ret.push(item[ele])
+          })
+        } else if (role === 'Admin') {
+          AdminItem.forEach(function (ele) {
+            ret.push(item[ele])
+          })
+        } else if (role === 'Doctor') {
+          DoctorItem.forEach(function (ele) {
+            ret.push(item[ele])
+          })
+        } else if (role === 'Medicine') {
+          MedicineTokenItem.forEach(function (ele) {
+            ret.push(item[ele])
+          })
+        } else {
+          ret.push(item[item.length - 1])
+        }
+        return ret
+      },
     },
   }
 </script>
