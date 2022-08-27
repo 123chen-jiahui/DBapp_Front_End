@@ -43,6 +43,8 @@ const router = new Router({
 
       route('Registration', null, 'registration'),
       route('RegistrationInfo', null, 'registrationinfo'),
+      route('PurchaseList', null, 'purchaselist'),
+      route('TransactionProcess', null, 'transaction'),
     ]),
     {
       name: 'Login',
@@ -54,6 +56,16 @@ const router = new Router({
       component: Register,
       path: '/register',
     },
+    {
+      name: 'PurchaseList',
+      component: () => import('../views/PurchaseList.vue'),
+      path: '/purchaselist',
+    },
+    {
+      name: 'TransactionProcess',
+      component: () => import('../views/TransactionProcess.vue'),
+      path: '/transaction',
+    }
   ],
 })
 

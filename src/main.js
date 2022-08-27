@@ -6,6 +6,14 @@ import './plugins'
 import store from './store'
 import { sync } from 'vuex-router-sync'
 // import axios from 'axios'
+import Vuetify from 'vuetify'
+// 引入element ui
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
+Vue.use(Vuetify)
 
 Vue.config.productionTip = false
 // axios.post('/auth/login_patient', {
