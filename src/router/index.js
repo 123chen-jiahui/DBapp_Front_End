@@ -45,6 +45,7 @@ const router = new Router({
       route('RegistrationInfo', null, 'registrationinfo'),
       route('PurchaseList', null, 'purchaselist'),
       route('TransactionProcess', null, 'transaction'),
+      route('Records', null, 'records'),
     ]),
     {
       name: 'Login',

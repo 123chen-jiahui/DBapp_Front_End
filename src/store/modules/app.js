@@ -63,6 +63,11 @@ const state = {
       icon: 'mdi-axis-arrow',
       to: '/transaction',
     },
+    {
+      title: '就医记录',
+      icon: 'mdi-archive-eye-outline',
+      to: '/records',
+    },
   ],
 }
 
