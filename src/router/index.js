@@ -21,10 +21,10 @@ const router = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
-    // {
-    //   path: '/',
-    //   redirect: '/login',
-    // },
+    {
+      path: '/',
+      redirect: '/login',
+    },
     layout('Default', [
       route('Dashboard'),
       // Pages
