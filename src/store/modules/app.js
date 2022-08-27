@@ -68,6 +68,16 @@ const state = {
       icon: 'mdi-archive-eye-outline',
       to: '/records',
     },
+    {
+      title: '基本信息',
+      icon: 'mdi-bell',
+      to: '/basicinfo',
+    },
+    {
+      title: '请假离职',
+      icon: 'mdi-bell',
+      to: '/leaveandresign',
+    },
   ],
 }
 
