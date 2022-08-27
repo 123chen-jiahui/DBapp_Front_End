@@ -122,7 +122,7 @@
           DoctorItem.forEach(function (ele) {
             ret.push(item[ele])
           })
-        } else if (role === 'Medicine') {
+        } else if (role === 'MedicineToken') {
           MedicineTokenItem.forEach(function (ele) {
             ret.push(item[ele])
           })
