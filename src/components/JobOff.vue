@@ -57,6 +57,7 @@ import axios from "axios";
 import { sync } from "vuex-pathify";
 
 export default {
+  name: 'JobOff',
   data() {
     return {
       jobofflist: [],

@@ -21,10 +21,10 @@ const router = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
-    {
-      path: '/',
-      redirect: '/login',
-    },
+    // {
+    //   path: '/',
+    //   redirect: '/login',
+    // },
     layout('Default', [
       route('Dashboard'),
       // Pages
@@ -43,6 +43,8 @@ const router = new Router({
 
       route('Registration', null, 'registration'),
       route('RegistrationInfo', null, 'registrationinfo'),
+      route('PurchaseList', null, 'purchaselist'),
+      route('TransactionProcess', null, 'transaction'),
     ]),
     {
       name: 'Login',

@@ -54,9 +54,10 @@
 
 <script>
 import axios from "axios";
-import { sync } from "vuex-pathify";
+// import { sync } from "vuex-pathify";
 
 export default {
+  name: 'DayOff',
   data() {
     return {
       approvelist: [],

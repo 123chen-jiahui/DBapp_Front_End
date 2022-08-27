@@ -62,7 +62,7 @@ const state = {
       title: '事务处理',
       icon: 'mdi-axis-arrow',
       to: '/transaction',
-    }
+    },
   ],
 }
 
