@@ -43,6 +43,7 @@ const router = new Router({
 
       route('Registration', null, 'registration'),
       route('RegistrationInfo', null, 'registrationinfo'),
+      route('Records', null, 'records'),
     ]),
     {
       name: 'Login',

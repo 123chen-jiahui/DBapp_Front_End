@@ -51,8 +51,13 @@ const state = {
     {
       title: '挂号信息',
       icon: 'mdi-bell',
-      to: '/registrationinfo'
-    }
+      to: '/registrationinfo',
+    },
+    {
+      title: '就医记录',
+      icon: 'mdi-archive-eye-outline',
+      to: '/records',
+    },
   ],
 }
 
