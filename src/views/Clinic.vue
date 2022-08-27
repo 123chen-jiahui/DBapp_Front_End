@@ -172,9 +172,9 @@
 
                 <tbody>
                   <tr v-for="(item) in patient.medicalRecords" :key="item.id">
-                    <td>{{item.diagnosisTime.slice(0, 10)}}</td>
-                    <td>{{item.staffId}}</td>
-                    <td class="text-right">{{item.diagnosticResult}}</td>
+                    <td>{{ item.diagnosisTime.slice(0, 10) }}</td>
+                    <td>{{ item.staffId }}</td>
+                    <td class="text-right">{{ item.diagnosticResult }}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
@@ -198,6 +198,7 @@
 import { sync } from 'vuex-pathify'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
+import { type } from 'os'
 export default {
 
   name: 'UserProfileView',
@@ -249,7 +250,7 @@ export default {
       return this.medicineSearched.length
     },
 
-    current_name: function() {
+    current_name: function () {
       return this.patient.name
     },
   },
@@ -269,18 +270,24 @@ export default {
         },
       })
         .then(function (response) {
-          console.log(response.data)
-          alert('获取病人信息成功！')
+          outerthis.showMessage('获取病人信息成功！')
+          // console.log(response.data)
+          // alert('获取病人信息成功！')
           outerthis.waitLine = response.data
           resolve()
         })
         .catch(function (error) {
-          if (error.response.status === 401) {
-            alert('用户信息过期，请重新登录')
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert('获取信息失败！' + error.response.data)
-          }
+          outerthis.showError(error, '获取信息失败', outerthis)
+
+          // if (error.response.status === 401) {
+          //   outerthis.$message({
+          //     message: '用户信息过期，请重新登录！',
+          //     type: 'warn'
+          //   })
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert('获取信息失败！' + error.response.data)
+          // }
         })
     },
     SetState(i) {
@@ -307,17 +314,19 @@ export default {
           DiagnosticResult: this.message,
         }
       })
-      .then(function(response) {
-        alert("诊断结果提交成功！")
-      })
-      .catch(function (error) {
-        if (error.response.status === 401) {
-          alert('用户信息过期，请重新登录')
-          outerthis.$router.push({name: 'Login'})
-        } else {
-          alert('诊断结果提交失败！' + error.message)
-        }
-      })
+        .then(function (response) {
+          outerthis.showMessage('诊断结果提交成功！')
+          // alert("诊断结果提交成功！")
+        })
+        .catch(function (error) {
+          outerthis.showError(error, '诊断结果提交失败！', outerthis)
+          // if (error.response.status === 401) {
+          //   alert('用户信息过期，请重新登录')
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert('诊断结果提交失败！' + error.message)
+          // }
+        })
 
       // alert('hello world')
     },
@@ -336,12 +345,13 @@ export default {
           console.log(outerthis.shoppingCart)
         })
         .catch(function (error) {
-          if (error.response.status === 401) {
-            alert("用户信息过期，请重新登录")
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert("获取病人处方信息失败！" + error.message)
-          }
+          outerthis.showError(error, '获取病人处方信息失败！', outerthis)
+          // if (error.response.status === 401) {
+          //   alert("用户信息过期，请重新登录")
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert("获取病人处方信息失败！" + error.message)
+          // }
         })
     },
     GetPatient() {
@@ -356,12 +366,13 @@ export default {
         outerthis.patient = response.data
         // return response.data
       }).catch(function (error) {
-        if (error.response.status === 401) {
-          alert("用户信息过期，请重新登录")
-          outerthis.$router.push({ name: 'Login' })
-        } else {
-          alert("获取病人信息失败！" + error.message)
-        }
+        outerthis.showError(error, '获取病人信息失败！', outerthis)
+        // if (error.response.status === 401) {
+        //   alert("用户信息过期，请重新登录")
+        //   outerthis.$router.push({ name: 'Login' })
+        // } else {
+        //   alert("获取病人信息失败！" + error.message)
+        // }
       })
     },
     GetMedicalRecord() {
@@ -372,15 +383,16 @@ export default {
         headers: {
           'Authorization': `bearer ${this.jwt}`,
         },
-      }).then(function(response) {
+      }).then(function (response) {
         outerthis.medicalRecords = response.data
-      }).catch(function(error) {
-        if (error.response.status === 401) {
-          alert("用户信息过期，请重新登录")
-          outerthis.$router.push({ name: 'Login' })
-        } else {
-          alert("获取病人诊断记录失败！" + error.message)
-        }
+      }).catch(function (error) {
+        outerthis.showError(error, '获取病人诊断记录失败！', outerthis)
+        // if (error.response.status === 401) {
+        //   alert("用户信息过期，请重新登录")
+        //   outerthis.$router.push({ name: 'Login' })
+        // } else {
+        //   alert("获取病人诊断记录失败！" + error.message)
+        // }
       })
     },
     SearchMedicine() {
@@ -400,12 +412,13 @@ export default {
           outerthis.medicineSearched = response.data
         })
         .catch(function (error) {
-          if (error.response.status === 401) {
-            alert('用户信息过期，请重新登录')
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert('获取信息失败！' + error.data + error.message)
-          }
+          outerthis.showError(error, '获取信息失败！', outerthis)
+          // if (error.response.status === 401) {
+          //   alert('用户信息过期，请重新登录')
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert('获取信息失败！' + error.data + error.message)
+          // }
         })
     },
     AddToShoppingCart(i) { // 发送http请求，成功后调用GetShoppingCart函数来重新获取购物车
@@ -425,15 +438,17 @@ export default {
           console.log('helloworld')
           outerthis.shoppingCart = response.data
           console.log(outerthis.shoppingCart)
-          alert('添加处方成功')
+          outerthis.showMessage('添加处方成功！')
+          // alert('添加处方成功')
         })
         .catch(function (error) {
-          if (error.response.status === 401) {
-            alert('用户信息过期，请重新登录')
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert('添加处方失败！' + error.message)
-          }
+          outerthis.showError(error, '添加处方失败！', outerthis)
+          // if (error.response.status === 401) {
+          //   alert('用户信息过期，请重新登录')
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert('添加处方失败！' + error.message)
+          // }
         })
     },
     RemoveFromShoppingCart(i) {
@@ -446,23 +461,26 @@ export default {
         },
       })
         .then(function (response) {
-          alert('删除药品成功！')
+          outerthis.showMessage('删除药品成功！')
+          // alert('删除药品成功！')
           // 两种方法都可以，这里采用第1种
           outerthis.shoppingCart = outerthis.GetShoppingCart()
           // outerthis.shoppingCart.shoppingCartItems.splice(i, 1)
         })
         .catch(function (error) {
-          if (error.response.status === 401) {
-            alert('用户信息过期，请重新登录')
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert('删除药品失败！' + error.message)
-          }
+          outerthis.showError(error, '删除药品失败！', outerthis)
+          // if (error.response.status === 401) {
+          //   alert('用户信息过期，请重新登录')
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert('删除药品失败！' + error.message)
+          // }
         })
     },
     GenerateOrder() {
       if (this.shoppingCart.shoppingCartItems.length === 0) {
-        alert('购物车为空，不能生成订单！')
+        this.showMessage('购物车为空，不能生成订单！', 'warning')
+        // alert('购物车为空，不能生成订单！')
         return
       }
       const outerthis = this
@@ -473,7 +491,8 @@ export default {
           'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function () {
-        alert('订单创建成功！')
+        showMessage('订单创建成功！')
+        // alert('订单创建成功！')
         // 订单创建成功后需要将购物车清空
         // 两种方法可以将购物车清空
         // 一种是重新获取购物车
@@ -482,12 +501,13 @@ export default {
 
         outerthis.shoppingCart = outerthis.GetShoppingCart()
       }).catch(function (error) {
-        if (error.response.status === 401) {
-          alert('用户信息过期，请重新登录')
-          outerthis.$router.push({ name: 'Login' })
-        } else {
-          alert('订单生成失败！' + error.message)
-        }
+        outerthis.showError(error, '订单生成失败！', outerthis)
+        // if (error.response.status === 401) {
+        //   alert('用户信息过期，请重新登录')
+        //   outerthis.$router.push({ name: 'Login' })
+        // } else {
+        //   alert('订单生成失败！' + error.message)
+        // }
       })
     },
     IsFirstOne() {

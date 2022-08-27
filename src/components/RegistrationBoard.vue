@@ -7,7 +7,7 @@
         <v-dialog v-model="dialog" max-width="500">
             <v-card>
                 <v-card-title class="text-h5">请选择挂号时间</v-card-title>
-                <DateMenu @GetDay="GetDay"/>
+                <DateMenu @GetDay="GetDay" />
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -40,7 +40,7 @@ export default {
     },
     props: ['StaffId'],
     computed: {
-      jwt: sync('app/jwt'),
+        jwt: sync('app/jwt'),
     },
     components: { DateMenu },
     methods: {
@@ -70,10 +70,12 @@ export default {
                 }
             })
                 .then(function (response) {
-                    alert("挂号成功！请前往“挂号查询”查看详情");
+                    outerthis.showMessage('挂号成功！请前往“挂号查询”查看详情')
+                    // alert("挂号成功！请前往“挂号查询”查看详情");
                 })
                 .catch(function (error) {
-                    alert("挂号失败！" + error.message);
+                    outerthis.showMessage('挂号失败' + error.message, 'error')
+                    // alert("挂号失败！" + error.message);
                 })
         }
     }

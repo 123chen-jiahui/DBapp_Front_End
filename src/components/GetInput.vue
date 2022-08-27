@@ -113,12 +113,13 @@ export default {
           }
         })
         .catch(function (error) {
-          if (error.response.status === 401) {
-            alert("用户信息过期，请重新登录")
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert("获取信息失败！" + error.message)
-          }
+          outerthis.showError(error, '获取信息失败！', outerthis)
+          // if (error.response.status === 401) {
+          //   alert("用户信息过期，请重新登录")
+          //   outerthis.$router.push({ name: 'Login' })
+          // } else {
+          //   alert("获取信息失败！" + error.message)
+          // }
         })
 
       // this.loading = true
@@ -155,17 +156,19 @@ export default {
         },
       })
       .then(function (response) {
-        alert('支付成功！')
+        outerthis.showMessage('支付成功！')
+        // alert('支付成功！')
         outerthis.Paid = true
         outerthis.RegistrationDetail.state = 'Completed'
       })
       .catch(function (error) {
-        if (error.response.status === 401) {
-            alert("用户信息过期，请重新登录")
-            outerthis.$router.push({ name: 'Login' })
-        } else {
-            alert("支付失败！" + error.message)
-        }
+        outerthis.showError(error, '支付失败！', outerthis)
+        // if (error.response.status === 401) {
+        //     alert("用户信息过期，请重新登录")
+        //     outerthis.$router.push({ name: 'Login' })
+        // } else {
+        //     alert("支付失败！" + error.message)
+        // }
       })
     }
   },

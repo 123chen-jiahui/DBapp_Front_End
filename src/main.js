@@ -35,6 +35,30 @@ Vue.config.productionTip = false
 
 sync(store, router)
 
+// 全局函数
+Vue.prototype.showError = function(error, error_string, outerthis) {
+  if (error.response.status === 401) {
+    this.$message({
+      message: '用户信息过期，请重新登录！',
+      type: 'warning',
+    })
+    outerthis.$router.push({ name: 'Login' })
+  } else {
+    this.$message({
+      message: error_string + error.response.data,
+      type: 'error'
+    })
+  }
+}
+
+Vue.prototype.showMessage = function(message, type = 'success') {
+  this.$message({
+    message: message,
+    type: type,
+  })
+}
+
+
 new Vue({
   router,
   vuetify,

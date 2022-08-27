@@ -82,16 +82,17 @@ export default {
           'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function (response) {
-        console.log('cnm!!!')
-        alert('支付成功！')
+        outerthis.showMessage('支付成功')
+        // alert('支付成功！')
         outerthis.$emit('paid', response.data)
       }).catch(function (error) {
-        if (error.response.status === 401) {
-          alert('用户信息过期，请重新登录')
-          outerthis.$router.push({ name: 'Login' })
-        } else {
-          alert('支付失败！' + error.response.data)
-        }
+        outerthis.showError(error, '支付失败！', outerthis)
+        // if (error.response.status === 401) {
+        //   alert('用户信息过期，请重新登录')
+        //   outerthis.$router.push({ name: 'Login' })
+        // } else {
+        //   alert('支付失败！' + error.response.data)
+        // }
       })
       this.dialog = false
     },
@@ -110,12 +111,13 @@ export default {
     }).then(function (response) {
       outerthis.orderDetail = response.data
     }).catch(function (error) {
-      if (error.response.status === 401) {
-        alert('用户信息过期，请重新登录')
-        outerthis.$router.push({ name: 'Login' })
-      } else {
-        alert('获取订单详情失败！' + error.response.data)
-      }
+      outerthis.showError(error, '获取订单详情失败！', outerthis)
+      // if (error.response.status === 401) {
+      //   alert('用户信息过期，请重新登录')
+      //   outerthis.$router.push({ name: 'Login' })
+      // } else {
+      //   alert('获取订单详情失败！' + error.response.data)
+      // }
     })
   },
 }
