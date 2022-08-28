@@ -99,9 +99,11 @@
             })
             .catch(function (error) {
               if (error.response.status === 400) {
-                alert(error.response.data)
+                outerthis.showMessage(error.response.data, 'error')
+                // alert(error.response.data)
               } else {
-                alert(error.message)
+                outerthis.showMessage(error.response.data, 'error')
+                // alert(error.message)
               }
               console.log(error)
             })
@@ -117,9 +119,11 @@
             })
             .catch(function (error) {
               if (error.response.status === 400) {
-                alert(error.response.data)
+                outerthis.showMessage(error.response.data, 'error')
+                // alert(error.response.data)
               } else {
-                alert(error.message)
+                outerthis.showMessage(error.response.data, 'error')
+                // alert(error.message)
               }
               console.log(error)
             })
