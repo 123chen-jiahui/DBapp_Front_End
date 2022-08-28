@@ -491,7 +491,8 @@ export default {
           'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function () {
-        showMessage('订单创建成功！')
+        outerthis.showMessage('订单创建成功！')
+        
         // alert('订单创建成功！')
         // 订单创建成功后需要将购物车清空
         // 两种方法可以将购物车清空
@@ -499,7 +500,8 @@ export default {
         // 另一种是手动清空本地变量
         // 这里采用的是第一种方法，比较保险，虽然效率比较低
 
-        outerthis.shoppingCart = outerthis.GetShoppingCart()
+        // outerthis.shoppingCart = outerthis.GetShoppingCart()
+        outerthis.shoppingCart = {}
       }).catch(function (error) {
         outerthis.showError(error, '订单生成失败！', outerthis)
         // if (error.response.status === 401) {
