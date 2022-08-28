@@ -84,6 +84,7 @@ export default {
       let param = new URLSearchParams(data)
       axios({
         method: 'post',
+        // 这里一定不能用get请求啊啊啊啊啊，被坑死了
         url: '/staff/test',
         data: param,
       }).then(function(response) {
