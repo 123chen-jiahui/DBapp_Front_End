@@ -153,7 +153,7 @@ export default {
             else { URL = '' }
             axios({
                 method: "get",
-                url: "api/purchaselist" + URL,
+                url: "/purchaselist" + URL,
             }).then(function (response) {
                 if (outerthis.searchoption === "2") {
                     outerthis.purchaselist = []
@@ -189,7 +189,7 @@ export default {
             let outerthis = this
             axios({
                 method: "post",
-                url: "/api/purchaselist",
+                url: "/purchaselist",
                 data: pl,
                 // headers: {
                 //     Authorization: `bearer ${this.jwt}`,
