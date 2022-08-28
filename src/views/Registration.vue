@@ -10,10 +10,10 @@
           </v-toolbar>
 
           <v-list>
-            <v-list-item-group v-model="model" :multiple="multiple" :mandatory="mandatory" color="indigo">
-              <v-list-item v-for="(item, index) in departments" :key="item.id">
+            <v-list-item-group v-model="departmentPointer" :multiple="multiple" :mandatory="mandatory" color="indigo">
+              <v-list-item v-for="(item) in departments" :key="item.id" @input="GetPagesAndShowStaff">
 
-                <v-list-item-content @click="ShowInfo(index)">
+                <v-list-item-content>
                   <v-list-item-title v-text="item.name"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -102,7 +102,6 @@ export default {
       staff: [],
       departmentPointer: -1,
 
-      model: 1,
       model2: 1,
       multiple: false,
       multiple2: false,
@@ -110,14 +109,26 @@ export default {
       mandatory2: false,
 
       pageNumber: 1,
-      pageSize: 4,
+      pageSize: 2,
 
-      paceCount: 0,
+      pageCount: 0,
     }
   },
   methods: {
-    async onPageChange(page) {
-      console.log(page)
+    async onPageChange() {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
+        params: {
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+        },
+      }).then(function (response) {
+        outerthis.staff = response.data
+      }).catch(function (error) {
+        outerthis.showError(error, '获取医生失败！', outerthis)
+      })
     },
     GetDepartments() {
       let outerthis = this;
@@ -130,13 +141,46 @@ export default {
     SayHello() {
       console.log("hello");
     },
-    ShowInfo(i) {
-      this.departmentPointer = i;
+    async GetPagesAndShowStaff() {
+      let self = this
+      this.pageNumber = 1
+      new Promise(function(resolve, reject) {
+        this.GetPages(resolve)
+      }.bind(this)).then(function() {
+        self.ShowStaff()
+      })
+    },
+    GetPages(resolve) {
+      const outerthis = this
+      axios({
+        methods: 'get',
+        url: `/staff/${this.departments[this.departmentPointer].id}/count`,
+      }).then(function (response) {
+        outerthis.pageCount = Math.ceil((response.data / outerthis.pageSize)) // 向上取整有几页
+        resolve()
+      }).catch(function (error) {
+        outerthis.showError(error, '获取页面数失败！', outerthis)
+      })
+    },
+    ShowStaff() {
+      const outerthis = this
+        axios({
+          method: 'get',
+          url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
+          params: {
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize,
+          }
+        }).then(response => {
+          outerthis.staff = response.data;
+        })
+    },
+    ShowInfo() {
       console.log("hello");
       let outerthis = this;
       axios({
         method: 'get',
-        url: `/staff/${outerthis.departments[i].id}`,
+        url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
         params: {
           pageNumber: this.pageNumber,
           pageSize: this.pageSize,

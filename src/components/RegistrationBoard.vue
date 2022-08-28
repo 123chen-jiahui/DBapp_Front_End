@@ -1,11 +1,12 @@
 <template>
     <v-row justify="center">
-        <v-btn color="primary" dark @click.stop="dialog = true">
+        <v-btn v-if="Schedules.length" color="primary" dark @click.stop="dialog = true">
             挂号
         </v-btn>
 
         <v-dialog v-model="dialog" max-width="500">
             <v-card>
+                <p>剩余容量：{{capacity}}</p>
                 <v-card-title class="text-h5">请选择挂号时间</v-card-title>
                 <DateMenu @GetDay="GetDay" />
 
@@ -36,11 +37,21 @@ export default {
         return {
             dialog: false,
             Day: (new Date).getDay(),
+            Schedules: [],
         };
     },
     props: ['StaffId'],
     computed: {
         jwt: sync('app/jwt'),
+
+        capacity: function() {
+            // 选中那天的容量
+            if (this.Schedules === null || this.Schedules[this.Day] === {}) {
+                return 0
+            } else {
+                return this.Schedules[this.Day].capacity
+            }
+        }
     },
     components: { DateMenu },
     methods: {
@@ -78,6 +89,22 @@ export default {
                     // alert("挂号失败！" + error.message);
                 })
         }
+    },
+    created() {
+        // 查询排班信息，还有多少容量
+        const outerthis = this
+        axios({
+            method: 'get',
+            url: '/schedule/' + `${this.StaffId}`,
+        })
+            .then(function (response) {
+                console.log('here')
+                outerthis.Schedules = response.data;
+            })
+            // .catch(function (error) {
+            //     outerthis.showMessage('找不到该医生的排班信息，无法预约该医生！', 'error')
+            //     // alert("找不到该医生的排班信息，无法预约该医生！" + error.message);
+            // })
     }
 }
 </script>
