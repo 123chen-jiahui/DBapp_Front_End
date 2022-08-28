@@ -13,14 +13,11 @@
             <th class="primary--text">
               星期
             </th>
-            <!-- <th class="primary--text">
+            <th class="primary--text">
               上班时间
             </th>
             <th class="primary--text">
               下班时间
-            </th> -->
-            <th class="primary--text">
-              时间段
             </th>
             <th class="primary--text">
               房间号
@@ -31,7 +28,8 @@
           <tr v-for="(item) in Schedules" :key="item.id">
             <td>{{ item.staffId }}</td>
             <td>{{ DayToChinese(item.day) }}</td>
-            <td>{{ item.timeSlotId }}</td>
+            <td>{{ item.timeSlot.startTime }}点</td>
+            <td>{{ item.timeSlot.endTime }}点</td>
             <td>{{ item.roomId }}</td>
           </tr>
         </tbody>
