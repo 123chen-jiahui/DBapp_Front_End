@@ -1,7 +1,7 @@
 <template>
   <v-container id="user-profile-view" fluid tag="section">
     <v-row justify="center">
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="6">
         <v-card class="mx-auto" max-width="700">
           <!-- <v-card-title>科室一览</v-card-title> -->
           <!-- <v-divider></v-divider> -->
@@ -22,7 +22,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="6">
         <v-card v-if="departmentPointer != -1" class="mx-auto" max-width="700">
 
           <v-toolbar color="primary" dark>
@@ -34,12 +34,60 @@
               <v-list-item v-for="(item, index) in staff" :key="item.id">
 
                 <v-list-item-content>
+                  <el-descriptions class="margin-top" :column="3" :size="small" border>
+                  <el-descriptions-item>
+                    <template slot="label">
+                      <i class="el-icon-user"></i>
+                      姓名
+                    </template>
+                    {{item.name}}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">
+                      <i class="el-icon-mobile-phone"></i>
+                      员工编号
+                    </template>
+                    {{item.id}}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">
+                      <i class="el-icon-location-outline"></i>
+                      职位
+                    </template>
+                    {{item.position}}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">
+                      <i class="el-icon-tickets"></i>
+                      照片
+                    </template>
+                    <!-- <el-tag size="small">学校</el-tag> -->
+                    <div>
+                      <img height="50px" width="40px"
+                      :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item.photo}`">
+                    </div>
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">
+                      <i class="el-icon-office-building"></i>
+                      专长及简介
+                    </template>
+                    {{item.skilled}}
+                  </el-descriptions-item>
+                </el-descriptions>
                   <!-- <p>姓名：{{item.name}}</p>
                   <p>Id：{{item.id}}</p>
                   <p>年龄：{{item.age}}</p> -->
+                  <!-- <div>
+                    <img height="50px" width="40px"
+                      :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item.photo}`">
+                  </div>
                   <v-list-item-title v-text="'姓名：' + item.name"></v-list-item-title>
                   <v-list-item-title v-text="'Id：' + item.id"></v-list-item-title>
                   <v-list-item-title v-text="'年龄：' + item.age"></v-list-item-title>
+                  <v-list-item-title v-text="'职位：' + item.position"></v-list-item-title>
+                  <v-list-item-title v-text="'擅长：' + item.skilled"></v-list-item-title>
+                  <v-list-item-title v-text="'简介：' + item.introduction"></v-list-item-title> -->
                   <RegistrationBoard :StaffId="staff[index].id" />
                 </v-list-item-content>
               </v-list-item>
@@ -112,6 +160,8 @@ export default {
       pageSize: 2,
 
       pageCount: 0,
+
+      size: '',
     }
   },
   methods: {
@@ -144,9 +194,9 @@ export default {
     async GetPagesAndShowStaff() {
       let self = this
       this.pageNumber = 1
-      new Promise(function(resolve, reject) {
+      new Promise(function (resolve, reject) {
         this.GetPages(resolve)
-      }.bind(this)).then(function() {
+      }.bind(this)).then(function () {
         self.ShowStaff()
       })
     },
@@ -164,16 +214,16 @@ export default {
     },
     ShowStaff() {
       const outerthis = this
-        axios({
-          method: 'get',
-          url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
-          params: {
-            pageNumber: this.pageNumber,
-            pageSize: this.pageSize,
-          }
-        }).then(response => {
-          outerthis.staff = response.data;
-        })
+      axios({
+        method: 'get',
+        url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
+        params: {
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+        }
+      }).then(response => {
+        outerthis.staff = response.data;
+      })
     },
     ShowInfo() {
       console.log("hello");
@@ -195,5 +245,22 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.total {
+  height: 200px;
+  width: 200px;
+}
+
+.location_left {
+  float: left;
+  width: 40px;
+}
+
+.location_left2 {
+  float: left;
+  width: 100px;
+}
+</style>
 
 
