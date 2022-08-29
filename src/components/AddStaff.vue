@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" size="mini">
     <el-form-item label="身份证号" prop="globalId">
       <el-input v-model="ruleForm.globalId" autocomplete="off"></el-input>
     </el-form-item>
