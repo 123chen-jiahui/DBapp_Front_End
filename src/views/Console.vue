@@ -25,6 +25,14 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
+
+      
+      <v-expansion-panel>
+        <v-expansion-panel-header>删除员工</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <DeleteStaff />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
       
     </v-expansion-panels>
   </v-row>
@@ -34,10 +42,11 @@
 import AddStaff from '../components/AddStaff.vue'
 import ModifyStaff from '../components/ModifyStaff.vue'
 import UploadPhotoForStaff from '../components/UploadPhotoForStaff.vue';
+import DeleteStaff from '../components/DeleteStaff.vue';
 export default {
   name: 'Console',
 
-  components: { AddStaff, ModifyStaff, UploadPhotoForStaff },
+  components: { AddStaff, ModifyStaff, UploadPhotoForStaff, DeleteStaff },
 
   data: () => ({
 
