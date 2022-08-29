@@ -33,6 +33,14 @@
           <DeleteStaff />
         </v-expansion-panel-content>
       </v-expansion-panel>
+
+
+      <v-expansion-panel>
+        <v-expansion-panel-header>查看/创建工作时间段</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <TimeSlot />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
       
     </v-expansion-panels>
   </v-row>
@@ -43,10 +51,11 @@ import AddStaff from '../components/AddStaff.vue'
 import ModifyStaff from '../components/ModifyStaff.vue'
 import UploadPhotoForStaff from '../components/UploadPhotoForStaff.vue';
 import DeleteStaff from '../components/DeleteStaff.vue';
+import TimeSlot from '../components/TimeSlot.vue';
 export default {
   name: 'Console',
 
-  components: { AddStaff, ModifyStaff, UploadPhotoForStaff, DeleteStaff },
+  components: { AddStaff, ModifyStaff, UploadPhotoForStaff, DeleteStaff, TimeSlot },
 
   data: () => ({
 
