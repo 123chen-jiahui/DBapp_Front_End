@@ -105,7 +105,7 @@
         // console.log(decode[prop])
         // 各个用户索引
         const PatientItem = [7, 8, 11]
-        const AdminItem = [9, 10]
+        const AdminItem = [9, 10, 14]
         const DoctorItem = [1, 12, 13]
         const MedicineTokenItem = [6, 12, 13]
         const ret = []

@@ -92,6 +92,12 @@ const state = {
       icon: 'mdi-bell',
       to: '/leaveandresign',
     },
+    // 14↓
+    {
+      title: '控制台',
+      icon: 'mdi-bell',
+      to: '/console',
+    }
   ],
 }
 

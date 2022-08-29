@@ -49,6 +49,7 @@ const router = new Router({
 
       route('BasicInfo', null, 'basicinfo'),
       route('LeaveAndResign', null, 'leaveandresign'),
+      route('Console', null, 'console'),
     ]),
     {
       name: 'Login',
