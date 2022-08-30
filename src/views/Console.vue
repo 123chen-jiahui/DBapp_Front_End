@@ -44,12 +44,22 @@
 
 
       <v-expansion-panel>
-        <v-expansion-panel-header>为员工创建排班</v-expansion-panel-header>
+        <v-expansion-panel-header>创建排班</v-expansion-panel-header>
         <v-expansion-panel-content>
           <CreateSchedule />
         </v-expansion-panel-content>
       </v-expansion-panel>
+
+
+      <v-expansion-panel>
+        <v-expansion-panel-header>修改排班</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <ChangeSchedule />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
       
+
+
     </v-expansion-panels>
   </v-row>
 </template>
@@ -61,16 +71,18 @@ import UploadPhotoForStaff from '../components/UploadPhotoForStaff.vue';
 import DeleteStaff from '../components/DeleteStaff.vue';
 import TimeSlot from '../components/TimeSlot.vue';
 import CreateSchedule from '../components/CreateSchedule.vue';
+import ChangeSchedule from '../components/ChangeSchedule.vue';
 export default {
   name: 'Console',
 
   components: {
-    AddStaff, 
-    ModifyStaff, 
-    UploadPhotoForStaff, 
-    DeleteStaff, 
-    TimeSlot, 
-    CreateSchedule 
+    AddStaff,
+    ModifyStaff,
+    UploadPhotoForStaff,
+    DeleteStaff,
+    TimeSlot,
+    CreateSchedule,
+    ChangeSchedule,
   },
 
   data: () => ({
