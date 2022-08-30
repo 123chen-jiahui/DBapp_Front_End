@@ -56,7 +56,7 @@
                       </v-fade-transition>
                     </template>
                     <template v-slot:append-outer>
-                      <v-btn color="primary" @click="SearchMedicine">
+                      <v-btn color="primary" @click="GetPageCountAndSearchMedicine">
                         <v-icon>mdi-button</v-icon>
                         查询
                       </v-btn>
@@ -79,6 +79,13 @@
                       </v-list-item>
                     </v-list-item-group>
                   </v-list>
+
+                  <!-- 分页 -->
+                  <div class="text-center">
+                    <v-pagination v-model="pageNumber" :length="pageCount" prev-icon="mdi-menu-left"
+                      next-icon="mdi-menu-right" @input="onPageChange">
+                    </v-pagination>
+                  </div>
                 </v-card>
                 <!-- <v-list>
                   <v-list-item two-line>
@@ -140,14 +147,14 @@
             </h6>
 
             <h4 class="text-h4 mb-3 text--primary">
-              {{ current_name }}
+              {{  current_name  }}
             </h4>
 
             <p class="text--secondary">
-              年龄：{{ patient.age }}
+              年龄：{{  patient.age  }}
             </p>
             <p class="text--secondary">
-              性别：{{ patient.gender }}
+              性别：{{  patient.gender  }}
             </p>
             <p v-if="patient.medicalRecords.length" class="text--secondary">
               <!-- <v-btn>获取病史</v-btn> -->
@@ -172,9 +179,9 @@
 
                 <tbody>
                   <tr v-for="(item) in patient.medicalRecords" :key="item.id">
-                    <td>{{ item.diagnosisTime.slice(0, 10) }}</td>
-                    <td>{{ item.staffId }}</td>
-                    <td class="text-right">{{ item.diagnosticResult }}</td>
+                    <td>{{  item.diagnosisTime.slice(0, 10)  }}</td>
+                    <td>{{  item.staffId  }}</td>
+                    <td class="text-right">{{  item.diagnosticResult  }}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
@@ -240,6 +247,11 @@ export default {
     flat: false,
     dense: false,
     count: 4,
+
+    // 分页
+    pageNumber: 1,
+    pageSize: 5,
+    pageCount: 0,
   }),
   computed: {
     jwt: sync('app/jwt'),
@@ -255,6 +267,26 @@ export default {
     },
   },
   methods: {
+    async onPageChange(page) {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: `medicine`,
+        params: {
+          keyWord: this.keyword,
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+        },
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        }
+      }).then(function (response) {
+        console.log(response.data)
+        outerthis.medicineSearched = response.data
+      }).catch(function (error) {
+        outerthis.showError(error, '获取信息失败！', outerthis)
+      })
+    },
     Sayhello() {
       alert('hello')
       return
@@ -271,23 +303,11 @@ export default {
       })
         .then(function (response) {
           outerthis.showMessage('获取病人信息成功！')
-          // console.log(response.data)
-          // alert('获取病人信息成功！')
           outerthis.waitLine = response.data
           resolve()
         })
         .catch(function (error) {
           outerthis.showError(error, '获取信息失败', outerthis)
-
-          // if (error.response.status === 401) {
-          //   outerthis.$message({
-          //     message: '用户信息过期，请重新登录！',
-          //     type: 'warn'
-          //   })
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert('获取信息失败！' + error.response.data)
-          // }
         })
     },
     SetState(i) {
@@ -395,6 +415,24 @@ export default {
         // }
       })
     },
+    GetPages(resolve) {
+      const outerthis = this
+      axios({
+        methods: 'get',
+        url: `/medicine/count`,
+        params: {
+          keyWord: this.keyword,
+        },
+        headers: {
+          'Authorization': `bearer ${this.jwt}`,
+        },
+      }).then(function (response) {
+        outerthis.pageCount = Math.ceil((response.data / outerthis.pageSize)) // 向上取整有几页
+        resolve()
+      }).catch(function (error) {
+        outerthis.showError(error, '获取页面数失败！', outerthis)
+      })
+    },
     SearchMedicine() {
       const outerthis = this
       axios({
@@ -402,6 +440,8 @@ export default {
         url: `medicine`,
         params: {
           keyWord: this.keyword,
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
         },
         headers: {
           'Authorization': `bearer ${this.jwt}`,
@@ -413,13 +453,15 @@ export default {
         })
         .catch(function (error) {
           outerthis.showError(error, '获取信息失败！', outerthis)
-          // if (error.response.status === 401) {
-          //   alert('用户信息过期，请重新登录')
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert('获取信息失败！' + error.data + error.message)
-          // }
         })
+    },
+    async GetPageCountAndSearchMedicine() {
+      let self = this
+      new Promise(function (resolve, reject) {
+        this.GetPages(resolve)
+      }.bind(this)).then(function () {
+        self.SearchMedicine()
+      })
     },
     AddToShoppingCart(i) { // 发送http请求，成功后调用GetShoppingCart函数来重新获取购物车
       // this.shoppingCart.push(this.medicineSearched[i])
@@ -492,7 +534,7 @@ export default {
         },
       }).then(function () {
         outerthis.showMessage('订单创建成功！')
-        
+
         // alert('订单创建成功！')
         // 订单创建成功后需要将购物车清空
         // 两种方法可以将购物车清空
