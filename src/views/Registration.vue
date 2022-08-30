@@ -63,7 +63,7 @@
                     </template>
                     <!-- <el-tag size="small">学校</el-tag> -->
                     <div>
-                      <img height="50px" width="40px"
+                      <img height="50px" width="35px"
                       :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item.photo}`">
                     </div>
                   </el-descriptions-item>
