@@ -114,20 +114,7 @@ export default {
         })
         .catch(function (error) {
           outerthis.showError(error, '获取信息失败！', outerthis)
-          // if (error.response.status === 401) {
-          //   alert("用户信息过期，请重新登录")
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert("获取信息失败！" + error.message)
-          // }
         })
-
-      // this.loading = true
-      // this.message = 'Wait for it...'
-      // setTimeout(() => {
-      //   this.loading = false
-      //   this.message = 'You\'ve clicked me!'
-      // }, 2000)
     },
     StateToChinese(s) {
       if (s === 'Pending') {
@@ -163,12 +150,6 @@ export default {
       })
       .catch(function (error) {
         outerthis.showError(error, '支付失败！', outerthis)
-        // if (error.response.status === 401) {
-        //     alert("用户信息过期，请重新登录")
-        //     outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //     alert("支付失败！" + error.message)
-        // }
       })
     }
   },

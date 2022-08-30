@@ -256,13 +256,6 @@ export default {
         }
       })
       return res
-      // for (let item in this.ordersOfCurrentPageOfAll) {
-      //   console.log(item.state)
-      //   if (item.state === 'Pending') {
-      //     res.push(item)
-      //   }
-      // }
-      // return res
     },
   },
 
@@ -281,31 +274,18 @@ export default {
           'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function (response) {
-        // alert('订单获取成功')
         outerthis.ordersOfCurrentPageOfAll = response.data
       }).catch(function (error) {
         outerthis.showError(error, '获取订单失败！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert('用户信息过期，请重新登录')
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert('获取订单失败！' + error.response.data)
-        // }
       })
-      // console.log('page is', page)
-      // console.log('pageNumberOfAll is', this.pageNumberOfAll)
     },
     Sayhello() {
       alert('hello')
       this.showModal = true
     },
     async SetPatientId(flag) {
-      // console.log('selecteditem is', this.selectedItem)
-      // console.log(flag)
       if (flag === true) {
         this.patientId = (this.patientsSearched[this.selectedItem].id).toString()
-        // console.log(flag)
-        // console.log('pateintId is', this.patientId)
       }
     },
     GetInfo() {
@@ -314,8 +294,6 @@ export default {
         this.GetOrders()
       }
       console.log('cnm!!!')
-      // this.GetPatient()
-      // this.GetOrders()
     },
     GetPatient() {
       const outerthis = this
@@ -328,7 +306,6 @@ export default {
       }).then(function (response) {
         if (response.status === 204) {
           outerthis.showMessage('不存在该病人', 'warning')
-          // alert('不存在该病人')
           return false
         }
         outerthis.patient = response.data
@@ -336,13 +313,6 @@ export default {
         return true
       }).catch(function (error) {
         outerthis.showError(error, '获取病人信息失败！', outerthis)
-        
-        // if (error.response.status === 401) {
-        //   alert('用户信息过期，请重新登录')
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert('获取病人信息失败！' + error.response.data)
-        // }
       })
       return false
     },
@@ -362,12 +332,6 @@ export default {
         outerthis.patientsSearched = response.data
       }).catch(function (error) {
         outerthis.showError(error, '查找病人时出错！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert('用户信息过期，请重新登录')
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert('查找病人时出错！' + error.response.data)
-        // }
       })
     },
     GetPages(resolve) {
@@ -383,12 +347,6 @@ export default {
         resolve()
       }).catch(function (error) {
         outerthis.showError(error, '获取页面数失败！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert('用户信息过期，请重新登录')
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert('获取页面数失败！' + error.response.data)
-        // }
       })
     },
     GetOrders() {
@@ -405,16 +363,9 @@ export default {
         },
       }).then(function (response) {
         outerthis.showMessage('获取订单成功！')
-        // alert('订单获取成功！')
         outerthis.ordersOfCurrentPageOfAll = response.data
       }).catch(function (error) {
         outerthis.showError(error, '获取订单失败！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert('用户信息过期，请重新登录')
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert('获取订单失败！' + error.response.data)
-        // }
       })
     },
     async GetPageCountAndOrders(flag = false) {

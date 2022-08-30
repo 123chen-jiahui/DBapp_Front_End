@@ -114,10 +114,10 @@ export default {
                 }
             })
                 .then(function (response) {
-                    alert("请假申请提交成功！请等待审核！");
+                    outerthis.showMessage('请假申请提交成功！请等待审核！')
                 })
                 .catch(function (error) {
-                    alert("请假申请提交失败！" + error.message);
+                    outerthis.showMessage(error, '请假申请提交失败！', outerthis)
                 })
         },
         GetLeaves() {

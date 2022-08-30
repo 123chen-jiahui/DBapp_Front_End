@@ -100,10 +100,8 @@
             .catch(function (error) {
               if (error.response.status === 400) {
                 outerthis.showMessage(error.response.data, 'error')
-                // alert(error.response.data)
               } else {
                 outerthis.showMessage(error.response.data, 'error')
-                // alert(error.message)
               }
               console.log(error)
             })
@@ -120,10 +118,8 @@
             .catch(function (error) {
               if (error.response.status === 400) {
                 outerthis.showMessage(error.response.data, 'error')
-                // alert(error.response.data)
               } else {
                 outerthis.showMessage(error.response.data, 'error')
-                // alert(error.message)
               }
               console.log(error)
             })

@@ -336,19 +336,10 @@ export default {
       })
         .then(function (response) {
           outerthis.showMessage('诊断结果提交成功！')
-          // alert("诊断结果提交成功！")
         })
         .catch(function (error) {
           outerthis.showError(error, '诊断结果提交失败！', outerthis)
-          // if (error.response.status === 401) {
-          //   alert('用户信息过期，请重新登录')
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert('诊断结果提交失败！' + error.message)
-          // }
         })
-
-      // alert('hello world')
     },
     GetShoppingCart() {
       const outerthis = this
@@ -360,18 +351,11 @@ export default {
         },
       })
         .then(function (response) {
-          // console.log(response.data)
           outerthis.shoppingCart = response.data
           console.log(outerthis.shoppingCart)
         })
         .catch(function (error) {
           outerthis.showError(error, '获取病人处方信息失败！', outerthis)
-          // if (error.response.status === 401) {
-          //   alert("用户信息过期，请重新登录")
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert("获取病人处方信息失败！" + error.message)
-          // }
         })
     },
     GetPatient() {
@@ -387,12 +371,6 @@ export default {
         // return response.data
       }).catch(function (error) {
         outerthis.showError(error, '获取病人信息失败！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert("用户信息过期，请重新登录")
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert("获取病人信息失败！" + error.message)
-        // }
       })
     },
     GetMedicalRecord() {
@@ -407,12 +385,6 @@ export default {
         outerthis.medicalRecords = response.data
       }).catch(function (error) {
         outerthis.showError(error, '获取病人诊断记录失败！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert("用户信息过期，请重新登录")
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert("获取病人诊断记录失败！" + error.message)
-        // }
       })
     },
     GetPages(resolve) {
@@ -481,16 +453,9 @@ export default {
           outerthis.shoppingCart = response.data
           console.log(outerthis.shoppingCart)
           outerthis.showMessage('添加处方成功！')
-          // alert('添加处方成功')
         })
         .catch(function (error) {
           outerthis.showError(error, '添加处方失败！', outerthis)
-          // if (error.response.status === 401) {
-          //   alert('用户信息过期，请重新登录')
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert('添加处方失败！' + error.message)
-          // }
         })
     },
     RemoveFromShoppingCart(i) {
@@ -504,25 +469,17 @@ export default {
       })
         .then(function (response) {
           outerthis.showMessage('删除药品成功！')
-          // alert('删除药品成功！')
           // 两种方法都可以，这里采用第1种
           outerthis.shoppingCart = outerthis.GetShoppingCart()
           // outerthis.shoppingCart.shoppingCartItems.splice(i, 1)
         })
         .catch(function (error) {
           outerthis.showError(error, '删除药品失败！', outerthis)
-          // if (error.response.status === 401) {
-          //   alert('用户信息过期，请重新登录')
-          //   outerthis.$router.push({ name: 'Login' })
-          // } else {
-          //   alert('删除药品失败！' + error.message)
-          // }
         })
     },
     GenerateOrder() {
       if (this.shoppingCart.shoppingCartItems.length === 0) {
         this.showMessage('购物车为空，不能生成订单！', 'warning')
-        // alert('购物车为空，不能生成订单！')
         return
       }
       const outerthis = this
@@ -535,7 +492,6 @@ export default {
       }).then(function () {
         outerthis.showMessage('订单创建成功！')
 
-        // alert('订单创建成功！')
         // 订单创建成功后需要将购物车清空
         // 两种方法可以将购物车清空
         // 一种是重新获取购物车
@@ -546,12 +502,6 @@ export default {
         outerthis.shoppingCart = {}
       }).catch(function (error) {
         outerthis.showError(error, '订单生成失败！', outerthis)
-        // if (error.response.status === 401) {
-        //   alert('用户信息过期，请重新登录')
-        //   outerthis.$router.push({ name: 'Login' })
-        // } else {
-        //   alert('订单生成失败！' + error.message)
-        // }
       })
     },
     IsFirstOne() {

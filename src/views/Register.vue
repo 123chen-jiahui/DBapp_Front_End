@@ -178,33 +178,34 @@
     methods: {
 
       register () {
+        const outerthis = this
         this.role = Number(this.role)
         this.depart = Number(this.depart)
         this.gender = Number(this.gender)
         if (!identityIDCard(this.ID)) {
-          alert('无效的身份证号')
+          this.showMessage('无效的身份证号', 'error')
           return
         }
         if (!isPoneAvailable(this.phone)) {
-          alert('无效的电话号码')
+          this.showMessage('无效的电话号码', 'error')
           return
         }
         if (this.gender !== 1 && this.gender !== 0) {
-          alert('未选择性别')
+          this.showMessage('未选择性别', 'error')
           return
         }
         if (!this.patient) {
           if (this.role > 2 || this.role < 0) {
-            alert('无效的职务')
+            this.showMessage('无效的职务', 'error')
             return
           }
           if (this.depart > 10 || this.depart < 1) {
-            alert('无效的部门')
+            this.showMessage('无效的部门', 'error')
             return
           }
         }
         if (this.pwd !== this.conpwd) {
-          alert('密码和确认密码不一致')
+          this.showMessage('密码和确认密码不一致', 'error')
           return
         }
         if (this.patient) {
@@ -220,13 +221,15 @@
             .then(function (response) {
               let alt = '以下是您的账号，请务必牢记：\n'
               alt = alt + response.data
-              alert(alt)
-              console.log(response)
+              outerthis.showMessage(alt, 'warning')
+              // alert(alt)
+              // console.log(response)
               this.$router.push({ name: 'Login' })
             })
             .catch(function (error) {
-              alert(error.message)
-              console.log(error)
+              outerthis.showMessage(error.message, 'error')
+              // alert(error.message)
+              // console.log(error)
             })
         } else { // 员工
           axios.post('/auth/register_staff', {
@@ -244,13 +247,15 @@
             .then(function (response) {
               let alt = '以下是您的账号，请务必牢记：\n'
               alt = alt + response.data
-              alert(alt)
-              console.log(response)
+              outerthis.showMessage(alt, 'warning')
+              // alert(alt)
+              // console.log(response)
               this.$router.push({ name: 'Login' })
             })
             .catch(function (error) {
-              alert(error.message)
-              console.log(error)
+              outerthis.showMessage(error.message, 'error')
+              // alert(error.message)
+              // console.log(error)
             })
         }
       },

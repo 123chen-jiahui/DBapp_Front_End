@@ -64,12 +64,7 @@ export default {
         }).then(function (response) {
           outerthis.user = response.data
         }).catch(function (error) {
-          if (error.response.status === 401) {
-            alert('用户信息过期，请重新登录')
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert('用户信息获取失败！' + error.message)
-          }
+          outerthis.showError(error, '用户信息获取失败！', outerthis)
         })
       } else {
         axios({
@@ -81,12 +76,7 @@ export default {
         }).then(function(response) {
           outerthis.user = response.data
         }).catch(function(error) {
-          if (error.response.status === 401) {
-            alert('用户信息过期，请重新登录')
-            outerthis.$router.push({ name: 'Login' })
-          } else {
-            alert('用户信息获取失败！' + error.message)
-          }
+          outerthis.showError(error, '用户信息获取失败！', outerthis)
         })
       }
     }

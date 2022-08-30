@@ -82,11 +82,9 @@ export default {
             })
                 .then(function (response) {
                     outerthis.showMessage('挂号成功！请前往“挂号查询”查看详情')
-                    // alert("挂号成功！请前往“挂号查询”查看详情");
                 })
                 .catch(function (error) {
-                    outerthis.showMessage('挂号失败' + error.message, 'error')
-                    // alert("挂号失败！" + error.message);
+                    outerthis.showError(error, '挂号失败！', outerthis)
                 })
         }
     },
@@ -101,10 +99,6 @@ export default {
                 console.log('here')
                 outerthis.Schedules = response.data;
             })
-            // .catch(function (error) {
-            //     outerthis.showMessage('找不到该医生的排班信息，无法预约该医生！', 'error')
-            //     // alert("找不到该医生的排班信息，无法预约该医生！" + error.message);
-            // })
     }
 }
 </script>

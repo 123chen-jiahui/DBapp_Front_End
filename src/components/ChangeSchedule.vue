@@ -200,27 +200,6 @@ export default {
     })
   }
 }
-
-function day2string(d) {
-  if (d === 0) {
-    return '星期日'
-  } else if (d === 1) {
-    return '星期一'
-  } else if (d === 2) {
-    return '星期二'
-  } else if (d === 3) {
-    return '星期三'
-  } else if (d === 4) {
-    return '星期四'
-  } else if (d === 5) {
-    return '星期五'
-  } else if (d === 6) {
-    return '星期六'
-  }
-}
-
-const stringDay = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-const numberDay = [0, 1, 2, 3, 4, 5, 6]
 </script>
 
   <style scoped>
