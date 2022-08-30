@@ -9,6 +9,8 @@
                 <p class="text" v-html="requestText"></p>
                 医生ID:{{ records[i].staffId }}
                 <p class="text" v-html="requestText"></p>
+                医生姓名:{{ records[i].staff.name }}
+                <p class="text" v-html="requestText"></p>
                 诊断时间:{{ records[i].diagnosisTime }}
                 <p class="text" v-html="requestText"></p>
                 诊断结果:{{ records[i].diagnosticResult }}

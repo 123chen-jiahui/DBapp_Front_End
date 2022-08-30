@@ -19,7 +19,10 @@
               单号
             </th>
             <th class="primary--text">
-              医生
+              医生Id
+            </th>
+            <th class="primary--text">
+              医生姓名
             </th>
             <th class="primary--text">
               诊断时间
@@ -36,6 +39,7 @@
           <tr v-for="(item) in Registrations" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.staffId }}</td>
+            <td>{{ item.staff.name}}</td>
             <td>{{ item.time }}</td>
             <td>{{ item.roomId }}</td>
             <td class="text-right">{{ StateToChinese(item.state) }}</td>

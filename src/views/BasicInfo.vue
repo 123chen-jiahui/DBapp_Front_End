@@ -27,7 +27,7 @@
         <tbody>
           <tr v-for="(item) in Schedules" :key="item.id">
             <td>{{ item.staffId }}</td>
-            <td>{{ DayToChinese(item.day) }}</td>
+            <td>{{ item.day }}</td>
             <td>{{ item.timeSlot.startTime }}点</td>
             <td>{{ item.timeSlot.endTime }}点</td>
             <td>{{ item.roomId }}</td>
@@ -70,7 +70,8 @@ export default {
           outerthis.Schedules = response.data;
         })
         .catch(function (error) {
-          alert("找不到您的排班信息！" + error.message);
+          outerthis.showError(error, '找不到您的排班信息！', outerthis)
+          // alert("找不到您的排班信息！" + error.message);
         })
     },
     GetTimeSlot(timeSlotId) {
@@ -85,23 +86,6 @@ export default {
         .catch(function (error) {
           alert("找不到您的上班时间段！" + error.message);
         })
-    },
-    DayToChinese(day) {
-      if (day === 0) {
-        return '星期日'
-      } else if (day === 1) {
-        return '星期一'
-      } else if (day === 2) {
-        return '星期二'
-      } else if (day === 3) {
-        return '星期三'
-      } else if (day === 4) {
-        return '星期四'
-      } else if (day === 5) {
-        return '星期五'
-      } else if (day === 6) {
-        return '星期六'
-      }
     },
   }
 }

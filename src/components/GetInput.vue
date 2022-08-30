@@ -22,7 +22,7 @@
             <thead>
               <tr>
                 <th class="primary--text">
-                  医生
+                  医生Id
                 </th>
                 <th class="primary--text">
                   诊断时间
