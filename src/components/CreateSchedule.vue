@@ -11,7 +11,7 @@
       </el-table>
     </div>
 
-    <div class="table-left">
+    <div class="create-right">
 
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
         size="mini">
@@ -34,9 +34,9 @@
             <el-option label="101" value="101"></el-option>
           </el-select>
         </el-form-item>
-      <!-- </el-form> -->
+      </el-form>
 
-      <!-- <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini"> -->
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini">
         <el-form-item label="星期二">
           <el-select v-model="ruleForm.two_time" placeholder="时间段">
             <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
@@ -48,9 +48,9 @@
             <el-option label="101" value="101"></el-option>
           </el-select>
         </el-form-item>
-      <!-- </el-form> -->
+      </el-form>
 
-      <!-- <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini"> -->
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini">
         <el-form-item label="星期三">
           <el-select v-model="ruleForm.three_time" placeholder="时间段">
             <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
@@ -62,9 +62,9 @@
             <el-option label="101" value="101"></el-option>
           </el-select>
         </el-form-item>
-      <!-- </el-form> -->
+      </el-form>
 
-      <!-- <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini"> -->
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini">
         <el-form-item label="星期四">
           <el-select v-model="ruleForm.four_time" placeholder="时间段">
             <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
@@ -76,9 +76,9 @@
             <el-option label="101" value="101"></el-option>
           </el-select>
         </el-form-item>
-      <!-- </el-form> -->
+      </el-form>
 
-      <!-- <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini"> -->
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini">
         <el-form-item label="星期五">
           <el-select v-model="ruleForm.five_time" placeholder="时间段">
             <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
@@ -90,35 +90,38 @@
             <el-option label="101" value="101"></el-option>
           </el-select>
         </el-form-item>
+      </el-form>
 
-        <!-- <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini"> -->
-          <el-form-item label="星期六">
-            <el-select v-model="ruleForm.six_time" placeholder="时间段">
-              <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="工作地点">
-            <el-select v-model="ruleForm.six_room" placeholder="房间">
-              <el-option label="201" value="201"></el-option>
-              <el-option label="101" value="101"></el-option>
-            </el-select>
-          </el-form-item>
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini">
+        <el-form-item label="星期六">
+          <el-select v-model="ruleForm.six_time" placeholder="时间段">
+            <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="工作地点">
+          <el-select v-model="ruleForm.six_room" placeholder="房间">
+            <el-option label="201" value="201"></el-option>
+            <el-option label="101" value="101"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
 
-          <!-- <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini"> -->
-            <el-form-item label="星期日">
-              <el-select v-model="ruleForm.zero_time" placeholder="时间段">
-                <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="工作地点">
-              <el-select v-model="ruleForm.zero_room" placeholder="房间">
-                <el-option label="201" value="201"></el-option>
-                <el-option label="101" value="101"></el-option>
-              </el-select>
-            </el-form-item>
-          <!-- </el-form> -->
-        <!-- </el-form> -->
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline" size="mini">
+        <el-form-item label="星期日">
+          <el-select v-model="ruleForm.zero_time" placeholder="时间段">
+            <el-option v-for="(item) in timeslots" :key="item.id" :label=item.id :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="工作地点">
+          <el-select v-model="ruleForm.zero_room" placeholder="房间">
+            <el-option label="201" value="201"></el-option>
+            <el-option label="101" value="101"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
 
+      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+        size="mini">
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -238,7 +241,7 @@ export default {
   width: 50%;
 }
 
-.create-left {
+.create-right {
   float: right;
   width: 50%
 }
