@@ -26,7 +26,7 @@ const router = new Router({
       redirect: '/login',
     },
     layout('Default', [
-      route('Dashboard'),
+      route('Dashboard', null, 'dashboard'),
       // Pages
       route('Clinic', null, 'clinic'),
 
@@ -61,16 +61,6 @@ const router = new Router({
       component: Register,
       path: '/register',
     },
-    {
-      name: 'PurchaseList',
-      component: () => import('../views/PurchaseList.vue'),
-      path: '/purchaselist',
-    },
-    {
-      name: 'TransactionProcess',
-      component: () => import('../views/TransactionProcess.vue'),
-      path: '/transaction',
-    }
   ],
 })
 
