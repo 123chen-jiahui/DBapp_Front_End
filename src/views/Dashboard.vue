@@ -1,15 +1,16 @@
 <template>
-<div>
+<!-- <div>
   <el-upload action='' :on-change="getFile" :limit="1" list-type="picture" :auto-upload=false>
     <el-button size="small">选择图片上传</el-button>
   </el-upload>
   <el-button @click="changeImg"><u>提交修改</u></el-button>
-  </div>
+  </div> -->
+  <h1>欢迎来到同济大学医院管理系统</h1>
 </template>
 
 
 
-<script>
+<!-- <script>
 import axios from 'axios';
 export default {
   data() {
@@ -95,4 +96,4 @@ export default {
     }
   }
 }
-</script>
+</script> -->

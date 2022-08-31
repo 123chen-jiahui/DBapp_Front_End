@@ -80,10 +80,12 @@ export default {
                 }
             })
                 .then(function (response) {
-                    alert("离职申请提交成功！请等待审核！");
+                    // alert("离职申请提交成功！请等待审核！");
+                    outerthis.showMessage('离职申请提交成功！请等待审核！')
                 })
                 .catch(function (error) {
-                    alert("离职申请提交失败！" + error.message);
+                    // alert("离职申请提交失败！" + error.message);
+                    outerthis.showError(error, '离职申请提交失败！', outerthis)
                 })
         },
         GetResignation() {
