@@ -9,7 +9,7 @@
             <v-toolbar-title>科室一览</v-toolbar-title>
           </v-toolbar>
 
-          <v-list>
+          <!-- <v-list>
             <v-list-item-group v-model="departmentPointer" :multiple="multiple" :mandatory="mandatory" color="indigo">
               <v-list-item v-for="(item) in departments" :key="item.id" @input="GetPagesAndShowStaff">
 
@@ -18,7 +18,19 @@
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
+          </v-list> -->
+
+          <v-list>
+            <v-list-item-group v-model="departmentPointer" :multiple="multiple" :mandatory="mandatory" color="indigo">
+              <v-list-item v-for="(item) in departmentsDetail" :key="item.id" @input="changeStaffChosen">
+
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
+
         </v-card>
       </v-col>
 
@@ -31,64 +43,52 @@
 
           <v-list>
             <v-list-item-group v-model="model2" :multiple="multiple2" :mandatory="mandatory2" color="indigo">
-              <v-list-item v-for="(item, index) in staff" :key="item.id">
+              <v-list-item v-for="(item, index) in staffChosen" :key="item.id">
 
                 <v-list-item-content>
-                  <el-descriptions class="margin-top" :column="3" :size="small" border>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <i class="el-icon-user"></i>
-                      姓名
-                    </template>
-                    {{item.name}}
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <i class="el-icon-mobile-phone"></i>
-                      员工编号
-                    </template>
-                    {{item.id}}
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <i class="el-icon-location-outline"></i>
-                      职位
-                    </template>
-                    {{item.position}}
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <i class="el-icon-tickets"></i>
-                      照片
-                    </template>
-                    <!-- <el-tag size="small">学校</el-tag> -->
-                    <div>
-                      <img height="50px" width="35px"
-                      :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item.photo}`">
-                    </div>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <i class="el-icon-office-building"></i>
-                      专长及简介
-                    </template>
-                    {{item.skilled}}
-                  </el-descriptions-item>
-                </el-descriptions>
-                  <!-- <p>姓名：{{item.name}}</p>
-                  <p>Id：{{item.id}}</p>
-                  <p>年龄：{{item.age}}</p> -->
-                  <!-- <div>
-                    <img height="50px" width="40px"
-                      :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item.photo}`">
-                  </div>
-                  <v-list-item-title v-text="'姓名：' + item.name"></v-list-item-title>
-                  <v-list-item-title v-text="'Id：' + item.id"></v-list-item-title>
-                  <v-list-item-title v-text="'年龄：' + item.age"></v-list-item-title>
-                  <v-list-item-title v-text="'职位：' + item.position"></v-list-item-title>
-                  <v-list-item-title v-text="'擅长：' + item.skilled"></v-list-item-title>
-                  <v-list-item-title v-text="'简介：' + item.introduction"></v-list-item-title> -->
-                  <RegistrationBoard :StaffId="staff[index].id" />
+                  <el-descriptions class="margin-top" :column="3" :size="mini" border>
+                    <el-descriptions-item>
+                      <template slot="label">
+                        <i class="el-icon-user"></i>
+                        姓名
+                      </template>
+                      {{ item.name }}
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                      <template slot="label">
+                        <i class="el-icon-mobile-phone"></i>
+                        员工编号
+                      </template>
+                      {{ item.id }}
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                      <template slot="label">
+                        <i class="el-icon-location-outline"></i>
+                        职位
+                      </template>
+                      {{ item.position }}
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                      <template slot="label">
+                        <i class="el-icon-tickets"></i>
+                        照片
+                      </template>
+                      <!-- <el-tag size="small">学校</el-tag> -->
+                      <div>
+                        <img height="50px" width="35px"
+                          :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item.photo}`">
+                      </div>
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                      <template slot="label">
+                        <i class="el-icon-office-building"></i>
+                        专长及简介
+                      </template>
+                      {{ item.skilled }}
+                    </el-descriptions-item>
+                  </el-descriptions>
+
+                  <RegistrationBoard :Staff="staffChosen[index]" />
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -102,39 +102,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <!-- <div class="main">
-    <div class="left">
-      <div class="app">
-        <button class="appHeader" v-on:click="GetDepartments">
-          <h2>科室一览</h2>
-        </button>
-        <div class="robotList">
-          <div v-for="(item, index) in departments" :key="item.id">
-            <div class="cardContainer" v-on:click="ShowInfo(index)">
-              {{ index + 1 }} {{ item.name }} {{ item.id }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="right">
-      <h2>科室介绍</h2>
-      <div v-if="departmentPointer != -1">
-        <h3>当前科室：{{ departments[departmentPointer].name }}</h3>
-        <h3>科室位置：{{ departments[departmentPointer].building }}</h3>
-        <h3>联系电话：{{ departments[departmentPointer].phone }}</h3>
-        <h3>以下是可预约医生</h3>
-        <div calss="robotList">
-          <div v-for="(item, index) in staff" :key="item.name">
-            <div class="cardContainer">
-              {{ index }} {{ item.name }} {{ item.age }}
-              <RegistrationBoard :StaffId="staff[index].id" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
+
 </template>
 
 <script>
@@ -162,7 +130,24 @@ export default {
       pageCount: 0,
 
       size: '',
+
+
+      departmentsDetail: [
+        {
+          id: ''
+        }
+      ],
+      staffChosen: [
+        {
+          id: ''
+        }
+      ],
     }
+  },
+  computed: {
+    // staffChosen: function() {
+    //   return this.departmentsDetail[this.departmentPointer].staff
+    // }
   },
   methods: {
     async onPageChange() {
@@ -188,13 +173,31 @@ export default {
           outerthis.departments = response.data;
         })
     },
+    GetDepartmentsDetail() {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: '/department/detail',
+      }).then(function (response) {
+        outerthis.departmentsDetail = response.data
+      }).catch(function (error) {
+        alert('what')
+        // outerthis.showMessage('获取科室信息失败', 'error')
+        outerthis.showError(error, '获取科室信息失败', outerthis)
+      })
+    },
+    async changeStaffChosen() {
+      this.staffChosen = this.departmentsDetail[this.departmentPointer].staff
+    },
     SayHello() {
-      console.log("hello");
+      // this.showMessage('hello')
+      console.log(this.departmentPointer)
     },
     async GetPagesAndShowStaff() {
       let self = this
       this.pageNumber = 1
       new Promise(function (resolve, reject) {
+        console.log('hello')
         this.GetPages(resolve)
       }.bind(this)).then(function () {
         self.ShowStaff()
@@ -241,7 +244,9 @@ export default {
     }
   },
   created() {
-    this.GetDepartments()
+    // 一上来就获取所有数据，并且
+    // this.GetDepartments()
+    this.GetDepartmentsDetail()
   }
 }
 </script>

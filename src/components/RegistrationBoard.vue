@@ -1,12 +1,12 @@
 <template>
     <v-row justify="center">
-        <v-btn v-if="Schedules.length" color="primary" dark @click.stop="dialog = true">
+        <v-btn v-if="Staff.schedules != undefined && Staff.schedules.length > 0" color="primary" dark @click.stop="dialog = true">
             挂号
         </v-btn>
 
         <v-dialog v-model="dialog" max-width="500">
             <v-card>
-                <p>剩余容量：{{capacity}}</p>
+                <p>剩余容量：{{Staff.schedules[Day].capacity}}</p>
                 <v-card-title class="text-h5">请选择挂号时间</v-card-title>
                 <DateMenu @GetDay="GetDay" />
 
@@ -40,17 +40,11 @@ export default {
             Schedules: [],
         };
     },
-    props: ['StaffId'],
+    props: ['Staff'],
     computed: {
         jwt: sync('app/jwt'),
-
-        capacity: function() {
-            // 选中那天的容量
-            if (this.Schedules === null || this.Schedules[this.Day] === {}) {
-                return 0
-            } else {
-                return this.Schedules[this.Day].capacity
-            }
+        staffId: function() {
+            return this.Staff.id
         }
     },
     components: { DateMenu },
@@ -76,7 +70,7 @@ export default {
                     'Authorization': `bearer ${this.jwt}`
                 },
                 data: {
-                    StaffId: this.StaffId, // 这个参数也是传进来的
+                    StaffId: this.staffId, // 这个参数也是传进来的
                     Day: this.Day,
                 }
             })
@@ -90,15 +84,15 @@ export default {
     },
     created() {
         // 查询排班信息，还有多少容量
-        const outerthis = this
-        axios({
-            method: 'get',
-            url: '/schedule/' + `${this.StaffId}`,
-        })
-            .then(function (response) {
-                console.log('here')
-                outerthis.Schedules = response.data;
-            })
+        // const outerthis = this
+        // axios({
+        //     method: 'get',
+        //     url: '/schedule/' + `${this.StaffId}`,
+        // })
+        //     .then(function (response) {
+        //         console.log('here')
+        //         outerthis.Schedules = response.data;
+        //     })
     }
 }
 </script>

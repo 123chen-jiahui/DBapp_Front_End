@@ -5,7 +5,10 @@
   </el-upload>
   <el-button @click="changeImg"><u>提交修改</u></el-button>
   </div> -->
-  <h1>欢迎来到同济大学医院管理系统</h1>
+  <!-- <h1>欢迎来到同济大学医院管理系统</h1> -->
+  <img src="
+
+  https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/logo.svg" />
 </template>
 
 

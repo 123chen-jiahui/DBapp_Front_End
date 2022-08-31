@@ -87,23 +87,7 @@
                     </v-pagination>
                   </div>
                 </v-card>
-                <!-- <v-list>
-                  <v-list-item two-line>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        止咳糖浆
-                      </v-list-item-title>
-                      <v-list-item-subtitle>
-                        清热止咳
-                      </v-list-item-subtitle>
-                      <v-btn>
-                        hello
-                      </v-btn>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list> -->
-                <!-- 要素：搜索框输入药品关键词，按钮点击显示查找结果，查找结果中也有按钮，可以点击添加，
-                还有有一个列表显示当前选择的药品信息，每个都有个按钮表示删除。最后有个生成订单按钮 -->
+                
               </v-card>
 
             </v-col>
@@ -528,20 +512,13 @@ export default {
     }
   },
   async created() {
-    // this.GetWaitLine().then(function() {
-    //   this.GetPatient()
-    // })
-    // this.GetWaitLine()
-    // this.GetPatient()
+    // 一上来就获取所有的数据
     let self = this
     new Promise(function (resolve, reject) {
       this.GetWaitLine(resolve)
     }.bind(this)).then(function () {
       self.GetPatient()
     })
-    // }).then(function() {
-    //   self.GetMedicalRecord()
-    // })
   }
 }
 </script>
