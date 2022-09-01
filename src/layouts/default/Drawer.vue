@@ -104,10 +104,10 @@
         const role = decode[prop]
         // console.log(decode[prop])
         // 各个用户索引
-        const PatientItem = [7, 8, 11]
-        const AdminItem = [9, 10, 14]
-        const DoctorItem = [1, 12, 13]
-        const MedicineTokenItem = [6, 12, 13]
+        const PatientItem = [0, 7, 8, 11]
+        const AdminItem = [0, 9, 10, 14]
+        const DoctorItem = [0, 1, 12, 13]
+        const MedicineTokenItem = [0, 6, 12, 13]
         const ret = []
         // 赋值
         if (role === 'Patient') {

@@ -12,14 +12,14 @@ import Register from '@/views/Register'
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'hash',
-  base: process.env.BASE_URL,
-  scrollBehavior: (to, from, savedPosition) => {
-    if (to.hash) return { selector: to.hash }
-    if (savedPosition) return savedPosition
+  // mode: 'hash',
+  // base: process.env.BASE_URL,
+  // scrollBehavior: (to, from, savedPosition) => {
+  //   if (to.hash) return { selector: to.hash }
+  //   if (savedPosition) return savedPosition
 
-    return { x: 0, y: 0 }
-  },
+  //   return { x: 0, y: 0 }
+  // },
   routes: [
     {
       path: '/',
