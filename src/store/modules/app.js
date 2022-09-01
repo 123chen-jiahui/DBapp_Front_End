@@ -97,7 +97,19 @@ const state = {
       title: '控制台',
       icon: 'mdi-bell',
       to: '/console',
-    }
+    },
+    // 15↓
+    {
+      title: '主页',
+      icon: 'mdi-axis-arrow',
+      to: '/homepage',
+    },
+    // 16↓
+    {
+      title: '通知公告发布',
+      icon: 'mdi-axis-arrow',
+      to: '/editarticle',
+    },
   ],
 }
 

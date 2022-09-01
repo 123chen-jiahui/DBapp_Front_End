@@ -50,6 +50,8 @@ const router = new Router({
       route('BasicInfo', null, 'basicinfo'),
       route('LeaveAndResign', null, 'leaveandresign'),
       route('Console', null, 'console'),
+      route('HomePage', null, 'homepage'),
+      route('EditArticle', null, 'editarticle'),
     ]),
     {
       name: 'Login',
