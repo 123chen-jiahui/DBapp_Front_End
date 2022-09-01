@@ -41,35 +41,35 @@
                             <i class="el-icon-more"></i>
                             采购单编号
                         </template>
-                        {{ detailcontent.id }}
+                        {{  detailcontent.id  }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
                             <i class="el-icon-date"></i>
                             创建日期
                         </template>
-                        {{ detailcontent.date }}
+                        {{  detailcontent.date  }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
                             <i class="el-icon-user"></i>
                             负责人
                         </template>
-                        {{ detailcontent.staffId }}
+                        {{  detailcontent.staffId  }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
                             <i class="el-icon-money"></i>
                             总金额
                         </template>
-                        {{ detailcontent.cost }}
+                        {{  detailcontent.cost  }}
                     </el-descriptions-item>
                     <el-descriptions-item span="3">
                         <template slot="label">
                             <i class="el-icon-tickets"></i>
                             备注
                         </template>
-                        {{ detailcontent.comment }}
+                        {{  detailcontent.comment  }}
                     </el-descriptions-item>
                 </el-descriptions>
                 <div class="add-header">
@@ -153,7 +153,7 @@ export default {
             else { URL = '' }
             axios({
                 method: "get",
-                url: "api/purchaselist" + URL,
+                url: "/purchaselist" + URL,
             }).then(function (response) {
                 if (outerthis.searchoption === "2") {
                     outerthis.purchaselist = []
@@ -189,7 +189,7 @@ export default {
             let outerthis = this
             axios({
                 method: "post",
-                url: "/api/purchaselist",
+                url: "/purchaselist",
                 data: pl,
                 // headers: {
                 //     Authorization: `bearer ${this.jwt}`,

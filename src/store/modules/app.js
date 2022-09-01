@@ -63,6 +63,16 @@ const state = {
       icon: 'mdi-axis-arrow',
       to: '/transaction',
     },
+    {
+      title: '主页',
+      icon: 'mdi-axis-arrow',
+      to: '/homepage',
+    },
+    {
+      title: '通知公告发布',
+      icon: 'mdi-axis-arrow',
+      to: '/editarticle',
+    }
   ],
 }
 
