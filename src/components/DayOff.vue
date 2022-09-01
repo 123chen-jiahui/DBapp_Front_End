@@ -54,7 +54,6 @@
 
 <script>
 import axios from "axios";
-// import { sync } from "vuex-pathify";
 
 export default {
   name: 'DayOff',
@@ -63,7 +62,6 @@ export default {
       approvelist: [],
       noHistory: true,
       showbutton: true,
-      jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMDAwMDIwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRG9jdG9yIiwibmJmIjoxNjYxMzQ1OTA5LCJleHAiOjE2NjQwMjQzMDksImlzcyI6IlRvbmdqaUhvc3BpdGFsLmNvbSIsImF1ZCI6IlRvbmdqaUhvc3BpdGFsLmNvbSJ9.4ZMFemcKupqc8MabmhSLGEmK_DhBbs1tyQ2YZM-Wb5Y",
     };
   },
   methods: {
@@ -72,9 +70,6 @@ export default {
       axios({
         method: "get",
         url: "/break/approveList",
-        headers: {
-          Authorization: `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           outerthis.showbutton = true;
@@ -103,9 +98,6 @@ export default {
           Id: outerthis.approvelist[index].id,
           State: state,
         },
-        headers: {
-          Authorization: `bearer ${this.jwt}`,
-        },
       })
         .then(function () {
           outerthis.$message({
@@ -127,14 +119,11 @@ export default {
       axios({
         method: "get",
         url: "/resign/history",
-        headers: {
-          Authorization: `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           outerthis.showbutton = false;
           outerthis.approvelist = response.data;
-          if (outerthis.approvelist.length == 0) {
+          if (outerthis.approvelist.length === 0) {
             outerthis.$message({
               message: "未查询到相关历史记录",
               type: "warning",
@@ -152,9 +141,6 @@ export default {
   mounted: function () {
     this.getapproveList();
     this.showbutton = true;
-  },
-  computed: {
-    // jwt: sync('app/jwt')
   },
 };
 </script>

@@ -209,7 +209,6 @@
 </template>
 
 <script>
-import { sync } from 'vuex-pathify'
 import axios from 'axios'
 import OrderDetail from '../components/OrderDetail.vue'
 export default {
@@ -247,7 +246,6 @@ export default {
     parsedDirection() {
       return this.direction.split(' ')
     },
-    jwt: sync('app/jwt'),
     ordersOfCurrentPageOfPending: function () {
       var res = []
       this.ordersOfCurrentPageOfAll.forEach(item => {
@@ -269,9 +267,6 @@ export default {
         params: {
           pageNumber: this.pageNumberOfAll,
           pageSize: this.pageSizeOfAll,
-        },
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function (response) {
         outerthis.ordersOfCurrentPageOfAll = response.data
@@ -300,9 +295,6 @@ export default {
       axios({
         method: 'get',
         url: `/patients/${this.patientId}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       }).then(function (response) {
         if (response.status === 204) {
           outerthis.showMessage('不存在该病人', 'warning')
@@ -322,9 +314,6 @@ export default {
       axios({
         method: 'get',
         url: `/patients`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
         params: {
           keyword: this.patientName,
         },
@@ -339,9 +328,6 @@ export default {
       axios({
         methods: 'get',
         url: `/api/orders/forDoctor/${this.patientId}/count`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       }).then(function (response) {
         outerthis.pageCount = Math.ceil((response.data / outerthis.pageSizeOfAll)) // 向上取整有几页
         resolve()
@@ -357,9 +343,6 @@ export default {
         params: {
           pageNumber: this.pageNumberOfAll,
           pageSize: this.pageSizeOfAll,
-        },
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function (response) {
         outerthis.showMessage('获取订单成功！')

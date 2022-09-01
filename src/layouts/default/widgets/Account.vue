@@ -36,16 +36,14 @@ export default {
   name: 'DefaultAccount',
 
   data: () => ({
+    token: '',
     user: {},
     Id: 0,
     role: '',
   }),
-  computed: {
-    jwt: sync('app/jwt'),
-  },
   methods: {
     CheckRoleAndId(resolve) {
-      const decode = jwtDecode(this.jwt)
+      const decode = jwtDecode(this.token)
       const prop = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
       this.role = decode[prop]
       this.Id = decode['sub']
@@ -58,9 +56,6 @@ export default {
         axios({
           method: 'get',
           url: `/patients/${this.Id}`,
-          headers: {
-            'Authorization': `bearer ${this.jwt}`,
-          },
         }).then(function (response) {
           outerthis.user = response.data
         }).catch(function (error) {
@@ -70,9 +65,6 @@ export default {
         axios({
           method: 'get',
           url: `/staff/info`,
-          headers: {
-            'Authorization': `bearer ${this.jwt}`,
-          },
         }).then(function(response) {
           outerthis.user = response.data
         }).catch(function(error) {
@@ -84,7 +76,7 @@ export default {
   async created() {
     // 判断是什么用户身份
     // 获取用户信息
-
+    this.token = localStorage.getItem('token')
     let self = this
     new Promise(function(resolve, reject) {
       this.CheckRoleAndId(resolve)

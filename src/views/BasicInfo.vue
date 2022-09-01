@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import { sync } from 'vuex-pathify'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 export default {
   name: 'BasicInfoView',
   data: function () {
     return {
+      token: '',
       Schedules: [],
       Timeslots: [],
     }
@@ -53,14 +53,10 @@ export default {
   mounted: function () {
     this.GetSchedules()
   },
-  computed: {
-    jwt: sync('app/jwt'),
-  },
   methods: {
     GetSchedules() {
-      console.log("got it! jwt is", this.jwt)
       const outerthis = this
-      const decode = jwtDecode(this.jwt)
+      const decode = jwtDecode(this.token)
       const staffId = decode['sub']
       axios({
         method: 'get',
@@ -75,7 +71,6 @@ export default {
         })
     },
     GetTimeSlot(timeSlotId) {
-      console.log("got it! jwt is", this.jwt)
       axios({
         method: 'get',
         url: '/time_slot'+`${timeSlotId}`,
@@ -87,6 +82,10 @@ export default {
           alert("找不到您的上班时间段！" + error.message);
         })
     },
-  }
+  },
+  created() {
+      this.token = localStorage.getItem('token')
+      // this.GetSchedules()
+    }
 }
 </script>

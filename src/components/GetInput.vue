@@ -79,7 +79,6 @@
 
 <script>
 import axios from 'axios'
-import { sync } from 'vuex-pathify'
 import MaterialCard from './MaterialCard.vue'
 export default {
   components: { MaterialCard },
@@ -91,9 +90,6 @@ export default {
     RegistrationDetail: {},
     Paid: true,
   }),
-  computed: {
-    jwt: sync('app/jwt'),
-  },
   methods: {
     clickMe() {
       this.loading = true
@@ -101,9 +97,6 @@ export default {
       axios({
         method: 'get',
         url: `/registration/${this.message}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        }
       })
         .then(function (response) {
           outerthis.RegistrationDetail = response.data
@@ -138,9 +131,6 @@ export default {
       axios({
         method: 'post',
         url: `/registration/${this.message}/placeOrder`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       })
       .then(function (response) {
         outerthis.showMessage('支付成功！')

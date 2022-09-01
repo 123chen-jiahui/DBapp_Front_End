@@ -62,18 +62,12 @@ export default {
     mounted: function () {
         this.GetResignation()
     },
-    computed: {
-        jwt: sync('app/jwt'),
-    },
     methods: {
         CommitResignationRequest() {
             const outerthis = this;
             axios({
                 method: 'post',
                 url: '/resign/askForResign',
-                headers: {
-                    'Authorization': `bearer ${this.jwt}`
-                },
                 data: {
                     Time: new Date().toISOString().substr(0, 10),
                     Reason: this.message,
@@ -89,14 +83,10 @@ export default {
                 })
         },
         GetResignation() {
-            console.log("got it! jwt is", this.jwt)
             const outerthis = this
             axios({
                 method: 'get',
                 url: '/resign/history',
-                headers: {
-                    'Authorization': `bearer ${this.jwt}`
-                },
             })
                 .then(function (response) {
                     outerthis.Resignations = response.data;

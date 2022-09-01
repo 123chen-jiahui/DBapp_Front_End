@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { sync } from 'vuex-pathify'
 import axios from 'axios'
 export default {
   name: 'OrderDetail',
@@ -50,18 +49,12 @@ export default {
     }
   },
   props: ['orderId'],
-  computed: {
-    jwt: sync('app/jwt'),
-  },
   methods: {
     Pay() {
       const outerthis = this
       axios({
         method: 'post',
         url: `/api/orders/${this.orderId}/placeOrder`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       }).then(function (response) {
         outerthis.showMessage('支付成功')
         outerthis.$emit('paid', response.data)
@@ -79,9 +72,6 @@ export default {
     axios({
       methods: 'get',
       url: `/api/orders/${this.orderId}`,
-      headers: {
-        'Authorization': `bearer ${this.jwt}`,
-      },
     }).then(function (response) {
       outerthis.orderDetail = response.data
     }).catch(function (error) {

@@ -191,9 +191,6 @@ export default {
                 method: "post",
                 url: "/purchaselist",
                 data: pl,
-                // headers: {
-                //     Authorization: `bearer ${this.jwt}`,
-                // },
             }).then(
                 () => {
                     outerthis.$message({

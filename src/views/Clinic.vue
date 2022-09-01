@@ -186,7 +186,6 @@
 </template>
 
 <script>
-import { sync } from 'vuex-pathify'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import { type } from 'os'
@@ -236,9 +235,10 @@ export default {
     pageNumber: 1,
     pageSize: 5,
     pageCount: 0,
+
+    token: '',
   }),
   computed: {
-    jwt: sync('app/jwt'),
     patientId: function () { // 计算属性用函数表示
       return this.waitLine[this.patientPointer].patientId
     },
@@ -261,9 +261,6 @@ export default {
           pageNumber: this.pageNumber,
           pageSize: this.pageSize,
         },
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        }
       }).then(function (response) {
         console.log(response.data)
         outerthis.medicineSearched = response.data
@@ -281,9 +278,6 @@ export default {
       axios({
         method: 'get',
         url: `/waitline/${this.day}`,
-        // headers: {
-        //   'Authorization': `bearer ${this.jwt}`,
-        // },
       })
         .then(function (response) {
           outerthis.showMessage('获取病人信息成功！')
@@ -303,15 +297,12 @@ export default {
     CommitDiagnosisResult() {
       // 由于api还没有写，所以这段先注释掉
       const outerthis = this
-      const decode = jwtDecode(this.jwt)
+      const decode = jwtDecode(this.token)
       const staffId = decode['sub']
 
       axios({
         method: 'post',
         url: '/api/medicalRecord',
-        // headers: {
-        //   'Authorization': `bearer ${this.jwt}`,
-        // },
         data: {
           PatientId: this.patientId,
           StaffId: staffId,
@@ -330,9 +321,6 @@ export default {
       axios({
         method: 'get',
         url: `/api/shoppingCart/${this.patientId}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           outerthis.shoppingCart = response.data
@@ -347,9 +335,6 @@ export default {
       axios({
         method: 'get',
         url: `/patients/detail/${this.patientId}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       }).then(function (response) {
         outerthis.patient = response.data
         // return response.data
@@ -362,9 +347,6 @@ export default {
       axios({
         method: 'get',
         url: `api/medicalRecord/${this.patientId}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       }).then(function (response) {
         outerthis.medicalRecords = response.data
       }).catch(function (error) {
@@ -378,9 +360,6 @@ export default {
         url: `/medicine/count`,
         params: {
           keyWord: this.keyword,
-        },
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
         },
       }).then(function (response) {
         outerthis.pageCount = Math.ceil((response.data / outerthis.pageSize)) // 向上取整有几页
@@ -399,9 +378,6 @@ export default {
           pageNumber: this.pageNumber,
           pageSize: this.pageSize,
         },
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        }
       })
         .then(function (response) {
           console.log(response.data)
@@ -428,9 +404,6 @@ export default {
         data: {
           Id: this.medicineSearched[i].id,
         },
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           console.log('helloworld')
@@ -447,9 +420,6 @@ export default {
       axios({
         method: 'delete',
         url: `/api/shoppingCart/items/${this.patientId}/${this.shoppingCart.shoppingCartItems[i].id}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           outerthis.showMessage('删除药品成功！')
@@ -470,9 +440,6 @@ export default {
       axios({
         method: 'post',
         url: `/api/shoppingCart/checkout/${this.patientId}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
       }).then(function () {
         outerthis.showMessage('订单创建成功！')
 
@@ -513,6 +480,7 @@ export default {
   },
   async created() {
     // 一上来就获取所有的数据
+    this.token = localStorage.getItem('token')
     let self = this
     new Promise(function (resolve, reject) {
       this.GetWaitLine(resolve)

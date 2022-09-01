@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import { sync } from 'vuex-pathify'
 import axios from 'axios'
 export default {
 
@@ -95,18 +94,12 @@ export default {
     mounted: function () {
         this.GetLeaves()
     },
-    computed: {
-        jwt: sync('app/jwt'),
-    },
     methods: {
         CommitLeaveRequest() {
             const outerthis = this;
             axios({
                 method: 'post',
                 url: '/break/askForBreak',
-                headers: {
-                    'Authorization': `bearer ${this.jwt}`
-                },
                 data: {
                     FromTime: this.startdate,
                     ToTime: this.enddate,
@@ -121,14 +114,10 @@ export default {
                 })
         },
         GetLeaves() {
-            console.log("got it! jwt is", this.jwt)
             const outerthis = this
             axios({
                 method: 'get',
                 url: '/break/history',
-                headers: {
-                    'Authorization': `bearer ${this.jwt}`
-                },
             })
                 .then(function (response) {
                     outerthis.LeaveRequest = response.data;

@@ -52,7 +52,6 @@
 
 <script>
 import axios from 'axios';
-import { sync } from 'vuex-pathify'
 import Index from '../layouts/default/Index.vue';
 import MaterialCard from '../components/MaterialCard.vue';
 import GetInput from '../components/GetInput.vue';
@@ -68,19 +67,12 @@ export default {
       showModal: false,
     }
   },
-  computed: {
-    jwt: sync('app/jwt'),
-  },
   methods: {
     GetAllRegistrations() {
-      console.log("got it! jwt is", this.jwt)
       const outerthis = this
       axios({
         method: 'get',
         url: '/registration',
-        headers: {
-          'Authorization': `bearer ${this.jwt}`
-        },
       })
         .then(function (response) {
           outerthis.Registrations = response.data;

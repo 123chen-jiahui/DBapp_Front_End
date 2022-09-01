@@ -28,13 +28,13 @@
 
 <script>
 import DateMenu from './DateMenu.vue'
-import { sync } from 'vuex-pathify'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 export default {
     name: "RegistrationBoard",
     data() {
         return {
+            token: '',
             dialog: false,
             Day: (new Date).getDay(),
             Schedules: [],
@@ -42,7 +42,6 @@ export default {
     },
     props: ['Staff'],
     computed: {
-        jwt: sync('app/jwt'),
         staffId: function() {
             return this.Staff.id
         }
@@ -50,12 +49,11 @@ export default {
     components: { DateMenu },
     methods: {
         GetDay(val) {
-            const decode = jwtDecode(this.jwt)
+            const decode = jwtDecode(this.token)
             console.log(decode)
             const prop = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
             console.log(decode[prop])
 
-            console.log("got it! jwt token is", this.jwt)
             console.log("got it! staffid is", this.StaffId)
             console.log("got it! it's", val)
             this.Day = val
@@ -66,9 +64,6 @@ export default {
             axios({
                 method: 'post',
                 url: '/registration/checkout',
-                headers: {
-                    'Authorization': `bearer ${this.jwt}`
-                },
                 data: {
                     StaffId: this.staffId, // 这个参数也是传进来的
                     Day: this.Day,
@@ -83,16 +78,7 @@ export default {
         }
     },
     created() {
-        // 查询排班信息，还有多少容量
-        // const outerthis = this
-        // axios({
-        //     method: 'get',
-        //     url: '/schedule/' + `${this.StaffId}`,
-        // })
-        //     .then(function (response) {
-        //         console.log('here')
-        //         outerthis.Schedules = response.data;
-        //     })
+        this.token = localStorage.getItem('token')
     }
 }
 </script>

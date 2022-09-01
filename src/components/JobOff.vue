@@ -54,7 +54,6 @@
 
 <script>
 import axios from "axios";
-import { sync } from "vuex-pathify";
 
 export default {
   name: 'JobOff',
@@ -62,7 +61,6 @@ export default {
     return {
       jobofflist: [],
       showbutton: true,
-      jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMDAwMDIwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRG9jdG9yIiwibmJmIjoxNjYxMzQ1OTA5LCJleHAiOjE2NjQwMjQzMDksImlzcyI6IlRvbmdqaUhvc3BpdGFsLmNvbSIsImF1ZCI6IlRvbmdqaUhvc3BpdGFsLmNvbSJ9.4ZMFemcKupqc8MabmhSLGEmK_DhBbs1tyQ2YZM-Wb5Y",
     };
   },
   methods: {
@@ -75,9 +73,6 @@ export default {
         data: {
           Id: outerthis.jobofflist[index].id,
           State: state,
-        },
-        headers: {
-          Authorization: `bearer ${this.jwt}`,
         },
       })
         .then(() => {
@@ -100,9 +95,6 @@ export default {
       axios({
         method: "get",
         url: "/resign/history",
-        headers: {
-          Authorization: `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           outerthis.showbutton = false;
@@ -127,9 +119,6 @@ export default {
       axios({
         method: "get",
         url: "/resign/approveList",
-        headers: {
-          Authorization: `bearer ${this.jwt}`,
-        },
       })
         .then(function (response) {
           outerthis.showbutton = true;
@@ -149,9 +138,6 @@ export default {
     this.showbutton = true;
     this.showOffList();
   },
-  computed: {
-    // jwt: sync('app/jwt')
-  }
 };
 </script>
 

@@ -23,35 +23,28 @@
 import axios from 'axios';
 import jwtDecode  from 'jwt-decode';
 import { Script } from "vm";
-import { sync } from 'vuex-pathify'
 export default {
     data: function () {
         return {
             records: [],
             requestText: "",
+
+            token: '',
         }
-    },
-    computed: {
-        jwt: sync('app/jwt'),
-          
     },
     mounted() {
         this.GetAllReords()
     },
     methods: {
         GetAllReords() {
-            console.log("got it! jwt is", this.jwt)
             const outerthis = this
-            const decode =jwtDecode(this.jwt)
+            const decode =jwtDecode(this.token)
           const patientId=decode['sub']
 
           const rLoading = this.openLoading();
             axios({
                 method: 'get',
                 url: `/api/medicalRecord/${patientId}`,
-                headers: {
-                    'Authorization': `bearer ${this.jwt}`
-                },
             })
                 .then(function (response) {
                     rLoading.close();
@@ -59,6 +52,9 @@ export default {
                     console.log("data is", response.data);
                 })
         },
+    },
+    created() {
+        this.token = localStorage.getItem('token')
     }
 }
 

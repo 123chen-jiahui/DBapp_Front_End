@@ -84,9 +84,6 @@ import { Loading } from 'element-ui'
         loading_register: false,
       }
     },
-    computed: {
-      jwt: sync('app/jwt'),
-    },
     methods: {
       register () { this.$router.push('/Register') },
       login () {
@@ -106,7 +103,6 @@ import { Loading } from 'element-ui'
             .then(function (response) {
               // rLoading.close()
               outerthis.loading_login = false
-              outerthis.jwt = response.data
 
               // 利用localstorage存token
               localStorage.setItem('token', response.data)
@@ -130,7 +126,6 @@ import { Loading } from 'element-ui'
           })
             .then(function (response) {
               outerthis.loading_login = false
-              outerthis.jwt = response.data
 
               localStorage.setItem('token', response.data)
 
