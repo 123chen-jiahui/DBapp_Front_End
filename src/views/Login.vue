@@ -109,7 +109,7 @@ import { Loading } from 'element-ui'
               outerthis.jwt = response.data
 
               // 利用localstorage存token
-              // localStorage.setItem("token", response.data)
+              localStorage.setItem('token', response.data)
 
               outerthis.$router.push({ name: 'Dashboard' })
               console.log(response)
@@ -131,6 +131,9 @@ import { Loading } from 'element-ui'
             .then(function (response) {
               outerthis.loading_login = false
               outerthis.jwt = response.data
+
+              localStorage.setItem('token', response.data)
+
               outerthis.$router.push({ name: 'Dashboard' })
               console.log(response)
             })

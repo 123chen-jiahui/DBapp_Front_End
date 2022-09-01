@@ -79,6 +79,10 @@
       ),
     },
 
+    data: () => ({
+      token: '',
+    }),
+
     computed: {
       ...get('user', [
         'dark',
@@ -88,7 +92,7 @@
       ...get('app', [
         'items',
         'version',
-        'jwt',
+        // 'jwt',
       ]),
       ...sync('app', [
         'drawer',
@@ -99,15 +103,15 @@
 
     methods: {
       JudgeAccountType (item) {
-        const decode = jwtDecode(this.jwt)
+        const decode = jwtDecode(this.token)
         const prop = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
         const role = decode[prop]
         // console.log(decode[prop])
         // 各个用户索引
-        const PatientItem = [0, 7, 8, 11]
-        const AdminItem = [0, 9, 10, 14]
-        const DoctorItem = [0, 1, 12, 13]
-        const MedicineTokenItem = [0, 6, 12, 13]
+        const PatientItem = [0, 7, 8, 11, 15]
+        const AdminItem = [0, 9, 10, 14, 15, 16]
+        const DoctorItem = [0, 1, 12, 13, 15]
+        const MedicineTokenItem = [0, 6, 12, 13, 15]
         const ret = []
         // 赋值
         if (role === 'Patient') {
@@ -132,6 +136,9 @@
         return ret
       },
     },
+    created() {
+      this.token = localStorage.getItem('token')
+    }
   }
 </script>
 

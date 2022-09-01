@@ -281,9 +281,9 @@ export default {
       axios({
         method: 'get',
         url: `/waitline/${this.day}`,
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
+        // headers: {
+        //   'Authorization': `bearer ${this.jwt}`,
+        // },
       })
         .then(function (response) {
           outerthis.showMessage('获取病人信息成功！')
@@ -309,9 +309,9 @@ export default {
       axios({
         method: 'post',
         url: '/api/medicalRecord',
-        headers: {
-          'Authorization': `bearer ${this.jwt}`,
-        },
+        // headers: {
+        //   'Authorization': `bearer ${this.jwt}`,
+        // },
         data: {
           PatientId: this.patientId,
           StaffId: staffId,
