@@ -96,6 +96,7 @@ import { Loading } from 'element-ui'
         //   Id: Number(this.id),
         //   Password: this.pwd,
         // })
+
         if (this.id[0] === '1') { // 病人
           // const rLoading = this.openLoading();
           axios.post('/auth/login_patient', {
@@ -106,6 +107,10 @@ import { Loading } from 'element-ui'
               // rLoading.close()
               outerthis.loading_login = false
               outerthis.jwt = response.data
+
+              // 利用localstorage存token
+              // localStorage.setItem("token", response.data)
+
               outerthis.$router.push({ name: 'Dashboard' })
               console.log(response)
             })
@@ -141,6 +146,13 @@ import { Loading } from 'element-ui'
         }
       },
     },
+    // 由于刷新后侧边栏消失问题未解决，这个功能暂且搁置
+    // created() {
+    //   let token = localStorage.getItem('token')
+    //   if (token != null || token != '') {
+    //     this.$router.push({ name: 'Dashboard' })
+    //   }
+    // }
   }
 </script>
 

@@ -44,6 +44,8 @@ export default {
             const outerthis = this
             const decode =jwtDecode(this.jwt)
           const patientId=decode['sub']
+
+          const rLoading = this.openLoading();
             axios({
                 method: 'get',
                 url: `/api/medicalRecord/${patientId}`,
@@ -52,6 +54,7 @@ export default {
                 },
             })
                 .then(function (response) {
+                    rLoading.close();
                     outerthis.records = response.data;
                     console.log("data is", response.data);
                 })
