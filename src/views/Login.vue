@@ -35,13 +35,17 @@
             class="log-box"
             style="text-align:right"
           >
-            <button
+            <el-button type="primary" :loading="loading_login" class="login_btn" @click="login">
+              登录
+            </el-button>
+            <!-- <button
               type="primary"
               class="login_btn"
               @click="login"
+              :loading="loading"
             >
               Login
-            </button>
+            </button> -->
           </div>
           <br>
           <button
@@ -66,6 +70,7 @@
 
 <script>
   import axios from 'axios'
+import { Loading } from 'element-ui'
   import { sync } from 'vuex-pathify'
   export default {
     name: 'Login',
@@ -74,6 +79,9 @@
       return {
         id: '',
         pwd: '',
+
+        loading_login: false,
+        loading_register: false,
       }
     },
     computed: {
@@ -82,22 +90,27 @@
     methods: {
       register () { this.$router.push('/Register') },
       login () {
+        this.loading_login = true
         const outerthis = this
         // console.log({
         //   Id: Number(this.id),
         //   Password: this.pwd,
         // })
         if (this.id[0] === '1') { // 病人
+          // const rLoading = this.openLoading();
           axios.post('/auth/login_patient', {
             Id: Number(this.id),
             Password: this.pwd,
           })
             .then(function (response) {
+              // rLoading.close()
+              outerthis.loading_login = false
               outerthis.jwt = response.data
               outerthis.$router.push({ name: 'Dashboard' })
               console.log(response)
             })
             .catch(function (error) {
+              outerthis.loading_login = false
               if (error.response.status === 400) {
                 outerthis.showMessage(error.response.data, 'error')
               } else {
@@ -111,11 +124,13 @@
             Password: this.pwd,
           })
             .then(function (response) {
+              outerthis.loading_login = false
               outerthis.jwt = response.data
               outerthis.$router.push({ name: 'Dashboard' })
               console.log(response)
             })
             .catch(function (error) {
+              outerthis.loading_login = false
               if (error.response.status === 400) {
                 outerthis.showMessage(error.response.data, 'error')
               } else {
