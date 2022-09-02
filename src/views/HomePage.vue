@@ -86,12 +86,11 @@
                 <span>{{ ' ' + detailitem.author }}</span>
             </div>
             <div class="homegap"></div>
-            <div v-for="(item, index) in detailitem.imgurl" :key="index" style="text-align: center;">
-                <el-image :src="item"></el-image>
-                <!-- <img :src="detailitem.imgurl" alt=""> -->
+            <div v-for="(item, index) in detailitem.imgAdress" :key="index" style="text-align: center;">
+                <el-image :src="`https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/${item}`"></el-image>
             </div>
             <p style="text-indent: 2em;">
-                {{ detailitem.text }}
+                {{ detailitem.content }}
             </p>
         </el-container>
     </v-container>
@@ -127,71 +126,8 @@ export default {
                     text: '北京同仁医院眼底专科引领国内眼底病治疗的发展方向，在国内率先开展了间接检眼镜下孔源性视网膜脱离的手术治疗，开展了玻璃体视网膜显微手术，创新了视网膜中央动脉栓塞的玻璃体手术治疗，在驱逐性出血以及眼底肿瘤的放射性敷贴治疗和局部切除手术治疗等多个方面处于国内和国际前沿。',
                 },
             ],
-            newsactivity: [
-                // {
-                //     articleid: 1,
-                //     title: '我院四位主治医师开展义诊活动',
-                //     time: '2022/08/15',
-                //     author: '医宣部',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '我院四位主治医师开展义诊活动',
-                //     time: '2022/08/15',
-                //     author: '医宣部',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '我院四位主治医师开展义诊活动',
-                //     time: '2022/08/15',
-                //     author: '医宣部',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '我院四位主治医师开展义诊活动',
-                //     time: '2022/08/15',
-                //     author: '医宣部',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '我院四位主治医师开展义诊活动',
-                //     time: '2022/08/15',
-                //     author: '医宣部',
-                // },
-            ],
-            notofication: [
-                // {
-                //     articleid: 1,
-                //     title: '2022年国家法定节假日同仁医院调休安排',
-                //     time: '2000/05/12',
-                //     author: '院长办公室',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '2022年国家法定节假日同仁医院调休安排',
-                //     time: '2000/05/12',
-                //     author: '院长办公室',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '2022年国家法定节假日同仁医院调休安排',
-                //     time: '2000/05/12',
-                //     author: '院长办公室',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '2022年国家法定节假日同仁医院调休安排',
-                //     time: '2000/05/12',
-                //     author: '院长办公室',
-                // },
-                // {
-                //     articleid: 1,
-                //     title: '2022年国家法定节假日同仁医院调休安排',
-                //     time: '2000/05/12',
-                //     author: '院长办公室',
-                // },
-
-            ],
+            newsactivity: [],
+            notofication: [],
             friendlink: [
                 {
                     icon: 'el-icon-delete-solid',
@@ -216,14 +152,7 @@ export default {
             ],
             article_title: ' this.imgurl[0].title',
             article_text: 'this.imgurl[0].text',
-            detailitem: {
-                // articleid: 1,
-                // title: '同仁医院暑期实习生招聘启事',
-                // time: '2022-08-12',
-                // author: '同仁医院人事部',
-                // text: '为了加强医院医疗设备质量控制管理，降低使用风险，延长使用寿命，保障安全性和可靠性，建立医疗设备质量控制档案，规范质量控制年度计划，定期测试安全性和有效性，评估使用状态并采取相应措施，特别针对院内除颤仪、输液泵、呼吸机、高频电刀、生物安全柜五类设备的质量控制与电气安全检查进行内部招标谈判。',
-                // imgurl: [],
-            },
+            detailitem: {},
             showdetail: false,
         }
     },
@@ -258,18 +187,7 @@ export default {
                 method: 'get',
                 url: 'article/' + articleid,
             }).then((res) => {
-                outerthis.detailitem.articleid = res.data.id;
-                outerthis.detailitem.text = res.data.content;
-                // 图片等会儿再改
-                // array.forEach(element => {
-                    
-                // });
-                outerthis.detailitem.imgurl = [] // 先清空，否则光头会越来越多
-                res.data.imgAdress.forEach(element => {
-                    outerthis.detailitem.imgurl.push('https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/' + element)
-                })
-                // outerthis.detailitem.imgurl = 'https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/' + res.data.imgAdress;
-                console.log(outerthis.detailitem.imgurl)
+                outerthis.detailitem = res.data
                 outerthis.showdetail = true;
             }).catch((error) => {
                 outerthis.showError(error, '加载失败：', outerthis)
