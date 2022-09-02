@@ -107,7 +107,7 @@ import { Loading } from 'element-ui'
               // 利用localstorage存token
               localStorage.setItem('token', response.data)
 
-              outerthis.$router.push({ name: 'Dashboard' })
+              outerthis.$router.push({ name: 'HomePage' })
               console.log(response)
             })
             .catch(function (error) {
@@ -129,7 +129,7 @@ import { Loading } from 'element-ui'
 
               localStorage.setItem('token', response.data)
 
-              outerthis.$router.push({ name: 'Dashboard' })
+              outerthis.$router.push({ name: 'HomePage' })
               console.log(response)
             })
             .catch(function (error) {

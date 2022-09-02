@@ -51,7 +51,7 @@ const router = new Router({
       route('LeaveAndResign', null, 'leaveandresign'),
       route('Console', null, 'console'),
       route('HomePage', null, 'homepage'),
-      route('EditArticle', null, 'editarticle'),
+      route('ManageArticle', null, 'managearticle'),
     ]),
     {
       name: 'Login',

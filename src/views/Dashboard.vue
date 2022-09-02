@@ -188,6 +188,7 @@ export default {
       this.isUploading = true
       const imgUrls = []
       for (const file of files) {
+        console.log(file)
         const res = await this.client.put(`${Math.random()}-${file.name}`, file)
         imgUrls.push(res.url)
       }

@@ -35,7 +35,8 @@
                                 <el-table :data="newsactivity" style="width: 100%;" :show-header="false" height="250"
                                     @row-click="showNewsD">
                                     <el-table-column prop="title" :show-overflow-tooltip="true"></el-table-column>
-                                    <el-table-column prop="time" align="right"></el-table-column>
+                                    <el-table-column prop="time" :formatter="formatTime" align="right">
+                                    </el-table-column>
                                 </el-table>
                             </el-card>
                         </el-col>
@@ -48,7 +49,7 @@
                                 <el-table :data="notofication" style="width: 100%;" :show-header="false" height="250"
                                     @row-click="showNotesD">
                                     <el-table-column prop="title" :show-overflow-tooltip="true"></el-table-column>
-                                    <el-table-column prop="time" align="right"></el-table-column>
+                                    <el-table-column prop="time" :formatter="formatTime" align="right"></el-table-column>
                                 </el-table>
                             </el-card>
                         </el-col>
@@ -82,7 +83,7 @@
             </el-header>
             <h2 style="text-align: center; line-height: 50px;">{{ detailitem.title }}</h2>
             <div style="text-align: center;">
-                <span>{{ detailitem.time + ' ' }}</span>
+                <span>{{ formatTime(0, 0, detailitem.time) + ' ' }}</span>
                 <span>{{ ' ' + detailitem.author }}</span>
             </div>
             <div class="homegap"></div>
@@ -202,10 +203,11 @@ export default {
                 outerthis.newsactivity = [];
                 outerthis.notofication = [];
                 res.data.forEach(element => {
-                    if (element.type === 'news')
+                    if (element.type === 'news') {
                         outerthis.newsactivity.push(element);
-                    else
+                    } else {
                         outerthis.notofication.push(element);
+                    }
                     outerthis.showdetail = false;
                 }).catch((error) => {
                     outerthis.showError(error, '加载失败：', outerthis)
@@ -216,6 +218,16 @@ export default {
                     })
                 });
             })
+        },
+        formatTime(row, column, cellValue) {
+            var date = new Date(cellValue);  // 参数需要毫秒数，所以这里将秒数乘于 1000
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            var D = date.getDate() + ' ';
+            var h = date.getHours() + ':';
+            var m = date.getMinutes() + ':';
+            var s = date.getSeconds();
+            return Y + M + D + h + m + s
         }
     },
     mounted() {
@@ -223,7 +235,18 @@ export default {
         this.article_text = this.imgurl[0].text;
         console.log('hello')
         this.pullArticle();
-    }
+    },
+}
+
+function toReadTime(v) {
+    var date = new Date(v);  // 参数需要毫秒数，所以这里将秒数乘于 1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    var D = date.getDate() + ' ';
+    var h = date.getHours() + ':';
+    var m = date.getMinutes() + ':';
+    var s = date.getSeconds();
+    return Y + M + D + h + m + s
 }
 </script>
 

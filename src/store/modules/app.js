@@ -106,9 +106,9 @@ const state = {
     },
     // 16↓
     {
-      title: '通知公告发布',
+      title: '编辑通知公告',
       icon: 'mdi-axis-arrow',
-      to: '/editarticle',
+      to: '/managearticle',
     },
   ],
 }
