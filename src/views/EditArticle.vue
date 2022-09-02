@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { axios } from "axios";
+import axios from "axios";
 import OSS from 'ali-oss'
 
 
@@ -50,6 +50,7 @@ export default {
   name: 'EditArtile',
   data() {
       return {
+        timeids: [],
           imgUrl: '',
           article: {
               title: '',
@@ -103,15 +104,35 @@ export default {
               bucket: "tongjihospital-data",
           });
           let timeid = new Date().getTime();
+          this.timeids.push('article/imgs/' + timeid + '.jpg')
+        //   this.timeid = timeid
           let key = 'article/imgs/' + timeid + '.jpg';
           let result = client.put(key, item.file);
           console.log(result);
       },
       submitForm(formName) {
+        alert('what')
+        const outerthis = this
           this.$refs[formName].validate((valid) => {
               if (valid) {
-                  alert('submit!');
-                  console.log(this.article)
+                axios({
+                    method: 'post',
+                    url: '/article',
+                    data: {
+                        Title: this.article.title,
+                        Author: this.article.author,
+                        Type: this.article.type,
+                        Time: (new Date().getTime()),
+                        Content: this.article.text,
+                        ImgsURL: this.timeids,
+                    },
+                }).then(function (response) {
+                    outerthis.showMessage('创建新闻成功')
+                    console.log(response.data)
+                }).catch(function(error) {
+                    outerthis.showError(error, '创建信息时出错', outerthis)
+                })
+
 
               } else {
                   console.log('error submit!!');

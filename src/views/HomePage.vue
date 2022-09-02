@@ -86,8 +86,9 @@
                 <span>{{ ' ' + detailitem.author }}</span>
             </div>
             <div class="homegap"></div>
-            <div style="text-align: center;">
-                <img :src="detailitem.imgurl" alt="">
+            <div v-for="(item, index) in detailitem.imgurl" :key="index" style="text-align: center;">
+                <el-image :src="item"></el-image>
+                <!-- <img :src="detailitem.imgurl" alt=""> -->
             </div>
             <p style="text-indent: 2em;">
                 {{ detailitem.text }}
@@ -127,68 +128,68 @@ export default {
                 },
             ],
             newsactivity: [
-                {
-                    articleid: 1,
-                    title: '我院四位主治医师开展义诊活动',
-                    time: '2022/08/15',
-                    author: '医宣部',
-                },
-                {
-                    articleid: 1,
-                    title: '我院四位主治医师开展义诊活动',
-                    time: '2022/08/15',
-                    author: '医宣部',
-                },
-                {
-                    articleid: 1,
-                    title: '我院四位主治医师开展义诊活动',
-                    time: '2022/08/15',
-                    author: '医宣部',
-                },
-                {
-                    articleid: 1,
-                    title: '我院四位主治医师开展义诊活动',
-                    time: '2022/08/15',
-                    author: '医宣部',
-                },
-                {
-                    articleid: 1,
-                    title: '我院四位主治医师开展义诊活动',
-                    time: '2022/08/15',
-                    author: '医宣部',
-                },
+                // {
+                //     articleid: 1,
+                //     title: '我院四位主治医师开展义诊活动',
+                //     time: '2022/08/15',
+                //     author: '医宣部',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '我院四位主治医师开展义诊活动',
+                //     time: '2022/08/15',
+                //     author: '医宣部',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '我院四位主治医师开展义诊活动',
+                //     time: '2022/08/15',
+                //     author: '医宣部',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '我院四位主治医师开展义诊活动',
+                //     time: '2022/08/15',
+                //     author: '医宣部',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '我院四位主治医师开展义诊活动',
+                //     time: '2022/08/15',
+                //     author: '医宣部',
+                // },
             ],
             notofication: [
-                {
-                    articleid: 1,
-                    title: '2022年国家法定节假日同仁医院调休安排',
-                    time: '2000/05/12',
-                    author: '院长办公室',
-                },
-                {
-                    articleid: 1,
-                    title: '2022年国家法定节假日同仁医院调休安排',
-                    time: '2000/05/12',
-                    author: '院长办公室',
-                },
-                {
-                    articleid: 1,
-                    title: '2022年国家法定节假日同仁医院调休安排',
-                    time: '2000/05/12',
-                    author: '院长办公室',
-                },
-                {
-                    articleid: 1,
-                    title: '2022年国家法定节假日同仁医院调休安排',
-                    time: '2000/05/12',
-                    author: '院长办公室',
-                },
-                {
-                    articleid: 1,
-                    title: '2022年国家法定节假日同仁医院调休安排',
-                    time: '2000/05/12',
-                    author: '院长办公室',
-                },
+                // {
+                //     articleid: 1,
+                //     title: '2022年国家法定节假日同仁医院调休安排',
+                //     time: '2000/05/12',
+                //     author: '院长办公室',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '2022年国家法定节假日同仁医院调休安排',
+                //     time: '2000/05/12',
+                //     author: '院长办公室',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '2022年国家法定节假日同仁医院调休安排',
+                //     time: '2000/05/12',
+                //     author: '院长办公室',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '2022年国家法定节假日同仁医院调休安排',
+                //     time: '2000/05/12',
+                //     author: '院长办公室',
+                // },
+                // {
+                //     articleid: 1,
+                //     title: '2022年国家法定节假日同仁医院调休安排',
+                //     time: '2000/05/12',
+                //     author: '院长办公室',
+                // },
 
             ],
             friendlink: [
@@ -216,12 +217,12 @@ export default {
             article_title: ' this.imgurl[0].title',
             article_text: 'this.imgurl[0].text',
             detailitem: {
-                articleid: 1,
-                title: '同仁医院暑期实习生招聘启事',
-                time: '2022-08-12',
-                author: '同仁医院人事部',
-                text: '为了加强医院医疗设备质量控制管理，降低使用风险，延长使用寿命，保障安全性和可靠性，建立医疗设备质量控制档案，规范质量控制年度计划，定期测试安全性和有效性，评估使用状态并采取相应措施，特别针对院内除颤仪、输液泵、呼吸机、高频电刀、生物安全柜五类设备的质量控制与电气安全检查进行内部招标谈判。',
-                imgurl: 'https://ts1.cn.mm.bing.net/th/id/R-C.b83a65082612ae593cfc80e5cc690cc6?rik=OWsTohF5jSQPvw&riu=http%3a%2f%2fwww.quangeijh.com%2fuploads%2f2020%2f10%2f121627421710.jpg&ehk=v%2bvQ2jaMXqVkDTgnaU4tu5fNa61kEA%2b3Jy0aaNjh9%2fA%3d&risl=&pid=ImgRaw&r=0',
+                // articleid: 1,
+                // title: '同仁医院暑期实习生招聘启事',
+                // time: '2022-08-12',
+                // author: '同仁医院人事部',
+                // text: '为了加强医院医疗设备质量控制管理，降低使用风险，延长使用寿命，保障安全性和可靠性，建立医疗设备质量控制档案，规范质量控制年度计划，定期测试安全性和有效性，评估使用状态并采取相应措施，特别针对院内除颤仪、输液泵、呼吸机、高频电刀、生物安全柜五类设备的质量控制与电气安全检查进行内部招标谈判。',
+                // imgurl: [],
             },
             showdetail: false,
         }
@@ -233,11 +234,11 @@ export default {
             return index;
         },
         showNewsD(row) {
-            console.log('新闻活动', row.newsid)
+            console.log('新闻活动', row)
             this.detailitem.title = row.title;
             this.detailitem.author = row.author;
             this.detailitem.time = row.time;
-            this.showDetail(row.articleid);
+            this.showDetail(row.id);
         },
         showNotesD(row) {
             console.log('通知公告', row)
@@ -246,7 +247,7 @@ export default {
             this.detailitem.time = row.time;
             this.showdetail = true;
 
-            this.showDetail(row.articleid)
+            this.showDetail(row.id)
         },
         returnHome() {
             this.showdetail = false;
@@ -257,15 +258,21 @@ export default {
                 method: 'get',
                 url: 'article/' + articleid,
             }).then((res) => {
-                outerthis.detailitem.articleid = res.data.articleid;
-                outerthis.detailitem.text = res.data.text;
-                outerthis.detailitem.imgurl = res.data.imgurl;
+                outerthis.detailitem.articleid = res.data.id;
+                outerthis.detailitem.text = res.data.content;
+                // 图片等会儿再改
+                // array.forEach(element => {
+                    
+                // });
+                outerthis.detailitem.imgurl = [] // 先清空，否则光头会越来越多
+                res.data.imgAdress.forEach(element => {
+                    outerthis.detailitem.imgurl.push('https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/' + element)
+                })
+                // outerthis.detailitem.imgurl = 'https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/' + res.data.imgAdress;
+                console.log(outerthis.detailitem.imgurl)
                 outerthis.showdetail = true;
             }).catch((error) => {
-                outerthis.$message({
-                    message: '加载失败',
-                    type: 'error',
-                });
+                outerthis.showError(error, '加载失败：', outerthis)
             });
         },
         pullArticle() {
@@ -274,15 +281,17 @@ export default {
                 method: 'get',
                 url: 'article',
             }).then((res) => {
-                newsactivity = [];
-                notofication = [];
+                outerthis.newsactivity = [];
+                outerthis.notofication = [];
                 res.data.forEach(element => {
-                    if (element.type == 'news')
+                    if (element.type === 'news')
                         outerthis.newsactivity.push(element);
                     else
                         outerthis.notofication.push(element);
                     outerthis.showdetail = false;
-                }).catch(() => {
+                }).catch((error) => {
+                    outerthis.showError(error, '加载失败：', outerthis)
+                    console.log('pullArticle something wrong')
                     outerthis.$message({
                         message: '加载失败',
                         type: 'error'
@@ -294,7 +303,8 @@ export default {
     mounted() {
         this.article_title = this.imgurl[0].title;
         this.article_text = this.imgurl[0].text;
-        // this.pullArticle();
+        console.log('hello')
+        this.pullArticle();
     }
 }
 </script>
