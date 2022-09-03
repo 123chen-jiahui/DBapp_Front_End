@@ -145,12 +145,12 @@ import { Loading } from 'element-ui'
       },
     },
     // 由于刷新后侧边栏消失问题未解决，这个功能暂且搁置
-    // created() {
-    //   let token = localStorage.getItem('token')
-    //   if (token != null || token != '') {
-    //     this.$router.push({ name: 'Dashboard' })
-    //   }
-    // }
+    created() {
+      let token = localStorage.getItem('token')
+      if (token != null && token != '') {
+        this.$router.push({ name: 'HomePage' })
+      }
+    }
   }
 </script>
 

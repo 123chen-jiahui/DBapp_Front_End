@@ -42,6 +42,8 @@ Vue.prototype.showError = function(error, error_string, outerthis) {
       message: '用户信息过期，请重新登录！',
       type: 'warning',
     })
+    // 清除localstorage
+    localStorage.removeItem('token')
     outerthis.$router.push({ name: 'Login' })
   } else {
     this.$message({

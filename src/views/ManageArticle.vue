@@ -18,7 +18,7 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="mini" @click="handleDelete(scope.$index, scope.row)" type="danger">删除</el-button>
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>
@@ -61,7 +61,7 @@
         </div>
         <div v-if="currentIndex === '3'">
             <el-form>
-                <el-form-item v-for="(item, index) in lunbotuList" :label="'轮播项' + (index + 1)">
+                <el-form-item v-for="(item, index) in lunbotuList" :key="index" :label="'轮播项' + (index + 1)">
                     <el-input v-model="item.title" placeholder="请输入内容"></el-input>
                     <el-input v-model="item.imgURL" placeholder="请输入图片地址"></el-input>
                 </el-form-item>

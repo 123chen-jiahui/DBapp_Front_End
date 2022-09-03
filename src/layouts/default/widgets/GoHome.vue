@@ -15,7 +15,7 @@
     name: 'DefaultGoHome',
     methods: {
       GoHome () {
-        this.$router.push({ name: 'Dashboard' })
+        this.$router.push({ name: 'HomePage' })
       },
     },
   }

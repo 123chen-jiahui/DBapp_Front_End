@@ -6,24 +6,29 @@
       </v-btn>
     </template>
 
+
     <v-list :tile="false" flat nav>
-      Id：{{user.id}}
+      Id：{{ user.id }}
     </v-list>
 
     <v-list :tile="false" flat nav>
-      姓名：{{user.name}}
+      姓名：{{ user.name }}
     </v-list>
 
     <v-list :tile="false" flat nav>
-      年龄：{{user.age}}
+      年龄：{{ user.age }}
     </v-list>
 
     <v-list :tile="false" flat nav>
-      性别：{{user.gender}}
+      性别：{{ user.gender }}
     </v-list>
 
-    <v-list v-if="role!='Patient'" :tile="false" flat nav>
-      身份：{{user.role}}
+    <v-list v-if="role != 'Patient'" :tile="false" flat nav>
+      身份：{{ user.role }}
+    </v-list>
+
+    <v-list>
+      <v-btn color="primary" @click="Logout">退出登录</v-btn>
     </v-list>
   </v-menu>
 </template>
@@ -42,6 +47,10 @@ export default {
     role: '',
   }),
   methods: {
+    Logout() {
+      localStorage.removeItem('token')
+      this.$router.push({ name: 'Login' })
+    },
     CheckRoleAndId(resolve) {
       const decode = jwtDecode(this.token)
       const prop = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
@@ -65,9 +74,9 @@ export default {
         axios({
           method: 'get',
           url: `/staff/info`,
-        }).then(function(response) {
+        }).then(function (response) {
           outerthis.user = response.data
-        }).catch(function(error) {
+        }).catch(function (error) {
           outerthis.showError(error, '用户信息获取失败！', outerthis)
         })
       }
@@ -78,9 +87,9 @@ export default {
     // 获取用户信息
     this.token = localStorage.getItem('token')
     let self = this
-    new Promise(function(resolve, reject) {
+    new Promise(function (resolve, reject) {
       this.CheckRoleAndId(resolve)
-    }.bind(this)).then(function() {
+    }.bind(this)).then(function () {
       self.GetInfo()
     })
   }
