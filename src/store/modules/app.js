@@ -17,7 +17,7 @@ const state = {
     // 1↓
     {
       title: '工作管理（门诊）',
-      icon: 'mdi-account',
+      icon: 'mdi-doctor',
       to: '/clinic',
     },
     // 2↓
@@ -53,61 +53,61 @@ const state = {
     // 7↓
     {
       title: '我要挂号',
-      icon: 'mdi-bell',
+      icon: 'mdi-hospital-building',
       to: '/registration',
     },
     // 8↓
     {
       title: '挂号信息',
-      icon: 'mdi-bell',
+      icon: 'mdi-folder-information-outline',
       to: '/registrationinfo'
     },
     // 9↓
     {
       title: '采购管理',
-      icon: 'mdi-application-cog',
+      icon: 'mdi-cart-minus',
       to: '/purchaselist'
     },
     // 10↓
     {
       title: '事务处理',
-      icon: 'mdi-axis-arrow',
+      icon: 'mdi-sitemap-outline',
       to: '/transaction',
     },
     // 11↓
     {
       title: '就医记录',
-      icon: 'mdi-archive-eye-outline',
+      icon: 'mdi-clipboard-text-clock-outline',
       to: '/records',
     },
     // 12↓
     {
       title: '基本信息',
-      icon: 'mdi-bell',
+      icon: 'mdi-airplane-clock',
       to: '/basicinfo',
     },
     // 13↓
     {
       title: '请假离职',
-      icon: 'mdi-bell',
+      icon: 'mdi-account-cash-outline',
       to: '/leaveandresign',
     },
     // 14↓
     {
       title: '控制台',
-      icon: 'mdi-bell',
+      icon: 'mdi-console',
       to: '/console',
     },
     // 15↓
     {
       title: '主页',
-      icon: 'mdi-axis-arrow',
+      icon: 'mdi-home-city',
       to: '/homepage',
     },
     // 16↓
     {
       title: '编辑通知公告',
-      icon: 'mdi-axis-arrow',
+      icon: 'mdi-application-edit-outline',
       to: '/managearticle',
     },
   ],
