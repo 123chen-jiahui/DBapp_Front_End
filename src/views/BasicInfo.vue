@@ -46,12 +46,16 @@ export default {
   data: function () {
     return {
       token: '',
-      Schedules: [],
+      Schedules: this.GLOBAL.SCHEDULES,
       Timeslots: [],
     }
   },
-  mounted: function () {
-    this.GetSchedules()
+  mounted() {
+    console.log('hello')
+    console.log(this.GLOBAL.SCHEDULES)
+    if (this.Schedules.length === 0) {
+      this.GetSchedules()
+    }
   },
   methods: {
     GetSchedules() {
@@ -64,6 +68,7 @@ export default {
       })
         .then(function (response) {
           outerthis.Schedules = response.data;
+          outerthis.GLOBAL.SCHEDULES = outerthis.Schedules
         })
         .catch(function (error) {
           outerthis.showError(error, '找不到您的排班信息！', outerthis)
@@ -73,7 +78,7 @@ export default {
     GetTimeSlot(timeSlotId) {
       axios({
         method: 'get',
-        url: '/time_slot'+`${timeSlotId}`,
+        url: '/time_slot' + `${timeSlotId}`,
       })
         .then(function (response) {
           outerthis.Timeslots = response.data;
@@ -84,8 +89,8 @@ export default {
     },
   },
   created() {
-      this.token = localStorage.getItem('token')
-      // this.GetSchedules()
-    }
+    this.token = localStorage.getItem('token')
+    // this.GetSchedules()
+  }
 }
 </script>

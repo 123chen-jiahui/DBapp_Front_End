@@ -64,7 +64,7 @@ Vue.prototype.showMessage = function(message, type = 'success') {
 import axios from 'axios' 
 import { Loading } from 'element-ui';
 
-// 设置全局变量
+// 设置全局变量(路由)
 import global_ from './base.vue'
 Vue.prototype.GLOBAL = global_;
 axios.defaults.baseURL=global_.BASE_URL;
@@ -100,6 +100,8 @@ axios.interceptors.request.use(
   }
 )
 
+// 设置全局变量来存schedule信息
+let Schedules = []
 
 new Vue({
   router,
