@@ -74,7 +74,7 @@
                         </v-list-item-content>
 
                         <v-list-item-icon>
-                          <v-icon v-text="'mdi-playlist-plus'" @click="AddToShoppingCart(index)"></v-icon>
+                          <v-icon v-text="'mdi-playlist-plus'" @click="NewAddToShoppingCart(index)"></v-icon>
                         </v-list-item-icon>
                       </v-list-item>
                     </v-list-item-group>
@@ -98,21 +98,21 @@
                 当前处方列表：
                 <v-list>
                   <v-list-item-group :multiple="multiple" :mandatory="mandatory" color="indigo">
-                    <v-list-item v-for="(item, index) in shoppingCart.shoppingCartItems" :key="item.id">
+                    <v-list-item v-for="(item, index) in current_shoppingCart" :key="item.id">
 
                       <v-list-item-content @click="Sayhello()">
-                        <v-list-item-title v-text="item.medicine.name"></v-list-item-title>
+                        <v-list-item-title v-text="item.name"></v-list-item-title>
                       </v-list-item-content>
 
                       <v-list-item-icon>
-                        <v-icon v-text="'mdi-trash-can-outline'" @click="RemoveFromShoppingCart(index)"></v-icon>
+                        <v-icon v-text="'mdi-trash-can-outline'" @click="NewRemoveFromShoppingCart(index)"></v-icon>
                       </v-list-item-icon>
                     </v-list-item>
 
                   </v-list-item-group>
                 </v-list>
                 <div style="text-align:center">
-                  <v-btn color="primary" @click="GenerateOrder">生成订单</v-btn>
+                  <v-btn color="primary" @click="NewGenerateOrder">生成订单</v-btn>
                 </div>
               </v-card>
             </v-col>
@@ -131,16 +131,16 @@
             </h6>
 
             <h4 class="text-h4 mb-3 text--primary">
-              {{  current_name  }}
+              {{  current_patient.patient.name  }}
             </h4>
 
             <p class="text--secondary">
-              年龄：{{  patient.age  }}
+              年龄：{{  current_patient.patient.age  }}
             </p>
             <p class="text--secondary">
-              性别：{{  patient.gender  }}
+              性别：{{  current_patient.patient.gender  }}
             </p>
-            <p v-if="patient.medicalRecords.length" class="text--secondary">
+            <p v-if="current_patient.patient.medicalRecords.length" class="text--secondary">
               <!-- <v-btn>获取病史</v-btn> -->
               以往病史：
               <!-- <p v-for="(item, index) in patient.medicalRecords" :key="item.id">
@@ -162,7 +162,7 @@
                 </thead>
 
                 <tbody>
-                  <tr v-for="(item) in patient.medicalRecords" :key="item.id">
+                  <tr v-for="(item) in current_patient.patient.medicalRecords" :key="item.id">
                     <td>{{  item.diagnosisTime.slice(0, 10)  }}</td>
                     <td>{{  item.staffId  }}</td>
                     <td class="text-right">{{  item.diagnosticResult  }}</td>
@@ -237,6 +237,8 @@ export default {
     pageCount: 0,
 
     token: '',
+
+    current_shoppingCart: [], // 数组，里面的元素是药品Id和药品名
   }),
   computed: {
     patientId: function () { // 计算属性用函数表示
@@ -249,6 +251,11 @@ export default {
     current_name: function () {
       return this.patient.name
     },
+
+
+    current_patient: function() {
+      return this.waitLine[this.patientPointer]
+    }
   },
   methods: {
     async onPageChange(page) {
@@ -272,6 +279,16 @@ export default {
       alert('hello')
       return
       console.log('olleh')
+    },
+    GetWaitLineDetail() {
+      const outerthis = this
+      axios({
+        method: 'get',
+        url: `/waitline/detail/${this.day}`,
+      }).then(function(response) {
+        outerthis.showMessage('获取病人信息成功！')
+        outerthis.waitLine = response.data
+      })
     },
     GetWaitLine(resolve) {
       const outerthis = this
@@ -304,7 +321,7 @@ export default {
         method: 'post',
         url: '/api/medicalRecord',
         data: {
-          PatientId: this.patientId,
+          PatientId: this.current_patient.patientId,
           StaffId: staffId,
           DiagnosticResult: this.message,
         }
@@ -395,6 +412,13 @@ export default {
         self.SearchMedicine()
       })
     },
+    NewAddToShoppingCart(i) {
+      let item = {
+        id: this.medicineSearched[i].id,
+        name: this.medicineSearched[i].name,
+      }
+      this.current_shoppingCart.push(item)
+    },
     AddToShoppingCart(i) { // 发送http请求，成功后调用GetShoppingCart函数来重新获取购物车
       // this.shoppingCart.push(this.medicineSearched[i])
       const outerthis = this
@@ -415,6 +439,9 @@ export default {
           outerthis.showError(error, '添加处方失败！', outerthis)
         })
     },
+    NewRemoveFromShoppingCart(i) {
+      this.current_shoppingCart.splice(i, 1)
+    },
     RemoveFromShoppingCart(i) {
       const outerthis = this
       axios({
@@ -430,6 +457,31 @@ export default {
         .catch(function (error) {
           outerthis.showError(error, '删除药品失败！', outerthis)
         })
+    },
+    NewGenerateOrder() {
+      if (this.current_shoppingCart.length === 0) {
+        this.showMessage('购物车为空，不能生成订单！', 'warning')
+        return
+      }
+      const outerthis = this
+      // 将数据加入
+      let params = []
+      this.current_shoppingCart.forEach(element => {
+        params.push(element.id)
+      })
+      axios({
+        method: 'post',
+        url: `/api/orders/${this.current_patient.patientId}`,
+        data: {
+          medicineId: params,
+        }
+      }).then(function(response) {
+        outerthis.showMessage('订单创建成功！')
+        // 清空购物车
+        outerthis.current_shoppingCart = []
+      }).catch(function(error) {
+        outerthis.showError(error, '订单生成失败！', outerthis)
+      })
     },
     GenerateOrder() {
       if (this.shoppingCart.shoppingCartItems.length === 0) {
@@ -464,16 +516,16 @@ export default {
     NextOne() {
       if (!this.IsLastOne()) {
         this.patientPointer += 1
-        this.GetShoppingCart()
-        this.GetPatient()
+        // this.GetShoppingCart()
+        // this.GetPatient()
         // this.GetMedicalRecord()
       }
     },
     LastOne() {
       if (!this.IsFirstOne()) {
         this.patientPointer -= 1
-        this.GetShoppingCart()
-        this.GetPatient()
+        // this.GetShoppingCart()
+        // this.GetPatient()
         // this.GetMedicalRecord()
       }
     }
@@ -481,12 +533,15 @@ export default {
   async created() {
     // 一上来就获取所有的数据
     this.token = localStorage.getItem('token')
-    let self = this
-    new Promise(function (resolve, reject) {
-      this.GetWaitLine(resolve)
-    }.bind(this)).then(function () {
-      self.GetPatient()
-    })
+    this.GetWaitLineDetail();
+
+
+    // let self = this
+    // new Promise(function (resolve, reject) {
+    //   this.GetWaitLine(resolve)
+    // }.bind(this)).then(function () {
+    //   self.GetPatient()
+    // })
   }
 }
 </script>
