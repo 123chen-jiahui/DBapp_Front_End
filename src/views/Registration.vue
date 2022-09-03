@@ -43,7 +43,7 @@
 
           <v-list>
             <v-list-item-group v-model="model2" :multiple="multiple2" :mandatory="mandatory2" color="indigo">
-              <v-list-item v-for="(item, index) in staffChosen" :key="item.id">
+              <v-list-item v-for="(item, index) in staffInOnePage" :key="item.id">
 
                 <v-list-item-content>
                   <el-descriptions class="margin-top" :column="3" :size="mini" border>
@@ -88,14 +88,13 @@
                     </el-descriptions-item>
                   </el-descriptions>
 
-                  <RegistrationBoard :Staff="staffChosen[index]" />
+                  <RegistrationBoard :Staff="staffInOnePage[index]" />
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
           </v-list>
           <div class="text-center">
-            <v-pagination v-model="pageNumber" :length="pageCount" prev-icon="mdi-menu-left" next-icon="mdi-menu-right"
-              @input="onPageChange">
+            <v-pagination v-model="pageNumber" :length="pageCount" prev-icon="mdi-menu-left" next-icon="mdi-menu-right">
             </v-pagination>
           </div>
         </v-card>
@@ -132,11 +131,13 @@ export default {
       size: '',
 
 
+
       departmentsDetail: [
         {
           id: ''
         }
       ],
+      // 选择科室后出现的所有医生
       staffChosen: [
         {
           id: ''
@@ -148,23 +149,31 @@ export default {
     // staffChosen: function() {
     //   return this.departmentsDetail[this.departmentPointer].staff
     // }
+    staffInOnePage: function() {
+      let staff = this.staffChosen.slice((this.pageNumber - 1) * this.pageSize, this.pageNumber * this.pageSize)
+      // this.staffChosen.forEach(element => {
+      //   // 根据pageNumber和pageSize来获取该页的医生
+        
+      // })
+      return staff
+    }
   },
   methods: {
-    async onPageChange() {
-      const outerthis = this
-      axios({
-        method: 'get',
-        url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
-        params: {
-          pageNumber: this.pageNumber,
-          pageSize: this.pageSize,
-        },
-      }).then(function (response) {
-        outerthis.staff = response.data
-      }).catch(function (error) {
-        outerthis.showError(error, '获取医生失败！', outerthis)
-      })
-    },
+    // async onPageChange() {
+    //   const outerthis = this
+    //   axios({
+    //     method: 'get',
+    //     url: `/staff/${outerthis.departments[this.departmentPointer].id}`,
+    //     params: {
+    //       pageNumber: this.pageNumber,
+    //       pageSize: this.pageSize,
+    //     },
+    //   }).then(function (response) {
+    //     outerthis.staff = response.data
+    //   }).catch(function (error) {
+    //     outerthis.showError(error, '获取医生失败！', outerthis)
+    //   })
+    // },
     GetDepartments() {
       let outerthis = this;
       axios.get('/department')
@@ -188,6 +197,11 @@ export default {
     },
     async changeStaffChosen() {
       this.staffChosen = this.departmentsDetail[this.departmentPointer].staff
+      // 这里需要改变pageCount
+      this.pageCount = Math.ceil(this.staffChosen.length / this.pageSize)
+      // 重置pageNumber为1
+      this.pageNumber = 1
+      // 同时需要改变页内的医生，通过computed来改变
     },
     SayHello() {
       // this.showMessage('hello')
