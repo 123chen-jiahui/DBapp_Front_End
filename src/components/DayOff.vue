@@ -67,11 +67,13 @@ export default {
   methods: {
     getapproveList() {
       let outerthis = this;
+      const rLoading = this.openLoading()
       axios({
         method: "get",
         url: "/break/approveList",
       })
         .then(function (response) {
+          rLoading.close()
           outerthis.showbutton = true;
           outerthis.approvelist = response.data;
           if (outerthis.approvelist.length === 0) {
@@ -83,6 +85,7 @@ export default {
           console.log("获取待处理请假记录成功", outerthis.approvelist);
         })
         .catch(function () {
+          rLoading.close()
           outerthis.$message({
             message: "请求出错",
             type: "error",

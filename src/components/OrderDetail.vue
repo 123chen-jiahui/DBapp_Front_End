@@ -52,13 +52,16 @@ export default {
   methods: {
     Pay() {
       const outerthis = this
+      const rLoading = this.openLoading()
       axios({
         method: 'post',
         url: `/api/orders/${this.orderId}/placeOrder`,
       }).then(function (response) {
+        rLoading.close()
         outerthis.showMessage('支付成功')
         outerthis.$emit('paid', response.data)
       }).catch(function (error) {
+        rLoading.close()
         outerthis.showError(error, '支付失败！', outerthis)
       })
       this.dialog = false

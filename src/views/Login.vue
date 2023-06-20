@@ -60,7 +60,7 @@
         <!-- 右侧的注册盒子 -->
         <div class="background">
           <div class="novel">
-            医院管理系统
+            社区医院管理系统
           </div>
         </div>
       </div>

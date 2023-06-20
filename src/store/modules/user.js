@@ -17,7 +17,7 @@ const state = {
     'rgba(244, 67, 54, .8), rgba(244, 67, 54, .8)',
   ],
   images: [
-    'https://img.moegirl.org.cn/common/f/f5/%E7%8F%82%E6%9C%B5%E8%8E%89%C2%B7%E8%AF%BA%E5%A1%94.png',
+    // 'https://img.moegirl.org.cn/common/f/f5/%E7%8F%82%E6%9C%B5%E8%8E%89%C2%B7%E8%AF%BA%E5%A1%94.png',
     'https://demos.creative-tim.com/material-dashboard-pro/assets/img/sidebar-2.jpg',
     'https://demos.creative-tim.com/material-dashboard-pro/assets/img/sidebar-3.jpg',
     'https://demos.creative-tim.com/material-dashboard-pro/assets/img/sidebar-4.jpg',

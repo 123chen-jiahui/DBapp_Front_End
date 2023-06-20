@@ -64,9 +64,12 @@ const state = {
     },
     // 9↓
     {
-      title: '采购管理',
-      icon: 'mdi-cart-minus',
-      to: '/purchaselist'
+      // title: '采购管理',
+      // icon: 'mdi-cart-minus',
+      // to: '/purchaselist',
+      title: '',
+      icon: '',
+      to: '',
     },
     // 10↓
     {
@@ -106,9 +109,12 @@ const state = {
     },
     // 16↓
     {
-      title: '编辑通知公告',
-      icon: 'mdi-application-edit-outline',
-      to: '/managearticle',
+      // title: '编辑通知公告',
+      // icon: 'mdi-application-edit-outline',
+      // to: '/managearticle',
+      title: '',
+      icon: '',
+      to: '',
     },
   ],
 }

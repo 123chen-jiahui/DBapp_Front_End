@@ -38,6 +38,8 @@
           </div>
           <div style="text-align:center">
             <v-btn color="primary" @click="CommitDiagnosisResult">提交</v-btn>
+            &nbsp;
+            <v-btn color="primary" @click="Referral">转诊</v-btn>
           </div>
         </v-card>
 
@@ -200,16 +202,20 @@ export default {
         text: '编辑处方',
       },
       {
-        icon: 'mdi-needle',
-        text: '编辑医疗项目',
+        // icon: 'mdi-needle',
+        // text: '编辑医疗项目',
+        icon: '',
+        text: '',
       },
       {
         icon: 'mdi-book-open-outline',
         text: '编辑诊断结果'
       },
       {
-        icon: 'mdi-hospital-box-outline',
-        text: '编辑手术'
+        // icon: 'mdi-hospital-box-outline',
+        // text: '编辑手术',
+        icon: '',
+        text: '',
       },
     ],
     message: '',
@@ -258,6 +264,9 @@ export default {
     }
   },
   methods: {
+    Referral() {
+      this.message += '\n-----------------------------------------------------\n由同济社区医院转诊至'
+    },
     async onPageChange(page) {
       const outerthis = this
       axios({
@@ -282,12 +291,21 @@ export default {
     },
     GetWaitLineDetail() {
       const outerthis = this
+      const rLoading = this.openLoading();
       axios({
         method: 'get',
         url: `/waitline/detail/${this.day}`,
       }).then(function(response) {
-        outerthis.showMessage('获取病人信息成功！')
-        outerthis.waitLine = response.data
+        rLoading.close()
+        // if (response.data.length === 0) {
+          // outerthis.showMessage('暂无诊断队列', 'warning')
+        // } else {
+          outerthis.showMessage('获取病人信息成功！')
+          outerthis.waitLine = response.data
+        // }
+      }).catch(function(error) {
+        rLoading.close()
+        outerthis.showError(error, '获取信息失败', outerthis)
       })
     },
     GetWaitLine(resolve) {

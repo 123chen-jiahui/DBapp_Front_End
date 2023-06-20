@@ -108,7 +108,7 @@
         const role = decode[prop]
         // console.log(decode[prop])
         // 各个用户索引
-        const PatientItem = [15, 7, 8, 11]
+        const PatientItem = [15, 7, 8, 11, 6]
         const AdminItem = [15, 9, 10, 14, 16]
         const DoctorItem = [15, 1, 12, 13]
         const MedicineTokenItem = [15, 6, 12, 13]

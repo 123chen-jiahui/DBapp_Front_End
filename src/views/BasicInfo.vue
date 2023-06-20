@@ -62,15 +62,19 @@ export default {
       const outerthis = this
       const decode = jwtDecode(this.token)
       const staffId = decode['sub']
+
+      const rLoading = this.openLoading()
       axios({
         method: 'get',
         url: '/schedule/' + `${staffId}`,
       })
         .then(function (response) {
+          rLoading.close()
           outerthis.Schedules = response.data;
           outerthis.GLOBAL.SCHEDULES = outerthis.Schedules
         })
         .catch(function (error) {
+          rLoading.close()
           outerthis.showError(error, '找不到您的排班信息！', outerthis)
           // alert("找不到您的排班信息！" + error.message);
         })

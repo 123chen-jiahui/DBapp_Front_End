@@ -92,7 +92,7 @@
         <!-- 右侧的注册盒子 -->
         <div class="background">
           <div class="novel">
-            医 院 管 理 系 统 注 册
+            社 区 医 院 管 理 系 统 注 册
           </div>
         </div>
       </div>

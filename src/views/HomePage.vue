@@ -3,7 +3,7 @@
         <el-container v-if="!showdetail">
             <el-header>
                 <!-- <img src="https://tongjihospital-data.oss-cn-shanghai.aliyuncs.com/logo.svg" alt=""> -->
-                <p class="homepage-header">健康呵护，同仁担当</p>
+                <p class="homepage-header">健康呵护，同济担当</p>
             </el-header>
             <el-main>
                 <el-row :gutter="20">
@@ -108,23 +108,23 @@ export default {
             imgurl: [
                 {
                     img: 'https://ts1.cn.mm.bing.net/th/id/R-C.89a3d093218812f0d196df0575505110?rik=VXIqOYHCXFZfSA&riu=http%3a%2f%2fsheencity-bj.oss-cn-hangzhou.aliyuncs.com%2fofficial-site%2fpictures%2f2015-02%2f12%2f36f76d6d055013b03d30a2d2aa2fbaf3.jpg&ehk=J%2bVyxNxO8X8%2foJU0%2f3BgW6wigquqYrVsldO2%2fOUKN1k%3d&risl=&pid=ImgRaw&r=0',
-                    title: '同仁医院南港新院区',
-                    text: '为了加强医院医疗设备质量控制管理，降低使用风险，延长使用寿命，保障安全性和可靠性，建立医疗设备质量控制档案，规范质量控制年度计划，定期测试安全性和有效性，评估使用状态并采取相应措施，特别针对院内除颤仪、输液泵、呼吸机、高频电刀、生物安全柜五类设备的质量控制与电气安全检查进行内部招标谈判。',
+                    title: '同济社区医院',
+                    text: '同济社区医院正式落户于上海市同济大学，为所在区域的万余居民、22个社区、8所幼儿园、5所小学、5所中学以及2所大学提供医疗保健、家庭医生、预防接种、预约转诊、传染病报告与管理、0～6岁儿童健康管理和孕产妇健康管理等优质',
                 },
                 {
                     img: 'https://ts1.cn.mm.bing.net/th/id/R-C.8133d1eeb11c1cdde37eefc7debd7d0d?rik=MuuuFmN3jiyAMg&riu=http%3a%2f%2fwww.cdtf.gov.cn%2fcdtfxq%2fyaowen%2f2021-05%2f07%2ff372bb865d8a4a8d89c8060d253fd45d%2fimages%2ff001d047e0a94fbd9109df21094d734e.jpg&ehk=v4lnwyHNo8SNT3ty69R1lQxY6gFD3ROIJAo7fdy%2ff7A%3d&risl=&pid=ImgRaw&r=0',
-                    title: '同仁医院市属疗养院',
-                    text: '我院经招聘测评及院长办公会审议等公开招聘程序，现将2022年公开招聘拟聘人员（第四批）公示如下，公示期自2022年7月15日至2022年7月25日。',
+                    title: '同济社区医院',
+                    text: '同济社区医院正式落户于上海市同济大学，为所在区域的万余居民、22个社区、8所幼儿园、5所小学、5所中学以及2所大学提供医疗保健、家庭医生、预防接种、预约转诊、传染病报告与管理、0～6岁儿童健康管理和孕产妇健康管理等优质',
                 },
                 {
                     img: 'https://www.aisa.com.cn/media/materials/3/origin/ffb144f918917d9d9e8133401fd73cf4_Ujfs3JX_origin.jpg',
-                    title: '住院部',
-                    text: '北京同仁医院眼底专科现有在职主任医师11人，副主任医师14人，是国内规模大、综合实力强的眼底病团队。团队骨干拥有各自明确的临床专长和相关研究方向，在视网膜脱离、糖尿病视网膜病变、高度近视、黄斑部疾病、眼底肿瘤等多种常见及疑难复杂眼底病的临床治疗领域处于国际前沿。',
+                    title: '同济社区医院',
+                    text: '同济社区医院正式落户于上海市同济大学，为所在区域的万余居民、22个社区、8所幼儿园、5所小学、5所中学以及2所大学提供医疗保健、家庭医生、预防接种、预约转诊、传染病报告与管理、0～6岁儿童健康管理和孕产妇健康管理等优质',
                 },
                 {
                     img: 'https://ts1.cn.mm.bing.net/th/id/R-C.c3cc236f7a06155950f527bbc10d530f?rik=7FYnrXuxCAyLWQ&riu=http%3a%2f%2fwww.jactgs.com%2fuploadfile%2f109%2fAttachment%2fd6fa39a42d.jpg&ehk=KGxCXBfn179s36kFFBgVJz3Nm8UUf7XG0GYjIJDgYNU%3d&risl=&pid=ImgRaw&r=0',
-                    title: '传染病防控中心',
-                    text: '北京同仁医院眼底专科引领国内眼底病治疗的发展方向，在国内率先开展了间接检眼镜下孔源性视网膜脱离的手术治疗，开展了玻璃体视网膜显微手术，创新了视网膜中央动脉栓塞的玻璃体手术治疗，在驱逐性出血以及眼底肿瘤的放射性敷贴治疗和局部切除手术治疗等多个方面处于国内和国际前沿。',
+                    title: '同济社区医院',
+                    text: '同济社区医院正式落户于上海市同济大学，为所在区域的万余居民、22个社区、8所幼儿园、5所小学、5所中学以及2所大学提供医疗保健、家庭医生、预防接种、预约转诊、传染病报告与管理、0～6岁儿童健康管理和孕产妇健康管理等优质',
                 },
             ],
             newsactivity: [],

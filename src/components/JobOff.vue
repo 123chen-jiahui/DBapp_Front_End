@@ -116,16 +116,19 @@ export default {
     // 查看带审批记录
     showOffList() {
       let outerthis = this;
+      const rLoading = this.openLoading()
       axios({
         method: "get",
         url: "/resign/approveList",
       })
         .then(function (response) {
+          rLoading.close()
           outerthis.showbutton = true;
           outerthis.jobofflist = response.data;
           console.log("获取待审批离职申请成功", response.data);
         })
         .catch(function (error) {
+          rLoading.close()
           outerthis.$message({
             message: "网络请求失败",
             type: "error",

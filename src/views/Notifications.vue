@@ -20,7 +20,7 @@
     </div>
     <view-intro heading="订单查询及缴费" />
 
-    <v-card>
+    <v-card style="display:none">
       <v-tabs v-model="tab" background-color="deep-purple accent-4" centered dark icons-and-text>
         <v-tabs-slider></v-tabs-slider>
 
@@ -211,6 +211,7 @@
 <script>
 import axios from 'axios'
 import OrderDetail from '../components/OrderDetail.vue'
+import jwtDecode from 'jwt-decode'
 export default {
   name: 'NotificationsView',
 
@@ -239,9 +240,18 @@ export default {
 
     showModal: false,
     dialog: false,
+
+    token: '',
   }),
   components: { OrderDetail },
-
+  mounted: function() {
+    // alert('hello')
+    this.token = localStorage.getItem('token')
+    const decode = jwtDecode(this.token)
+    this.patientId = decode['sub']
+    // alert(this.patientId)
+    this.GetPageCountAndOrders()
+  },
   computed: {
     parsedDirection() {
       return this.direction.split(' ')

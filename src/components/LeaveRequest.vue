@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item) in LeaveRequest" :key="item.fromTime">
+                    <tr v-for="(item, index) in LeaveRequest" :key="index">
                         <td>{{ item.staffId }}</td>
                         <td>{{ item.fromTime.substr(0, 10) }}</td>
                         <td>{{ item.toTime.substr(0, 10) }}</td>
@@ -79,6 +79,7 @@
 
 <script>
 import axios from 'axios'
+import { consoleWarn } from 'vuetify/lib/util/console';
 export default {
 
     name: 'LeaveRequest',
@@ -91,12 +92,25 @@ export default {
         message: '',
         LeaveRequest: [],
     }),
-    mounted: function () {
-        this.GetLeaves()
+    mounted() {
+        // this.GetLeaves()
+        console.log('hello')
+        console.log(this.GLOBAL.LEAVEREQUEST)
+        if (this.LeaveRequest.length === 0) {
+            this.LeaveRequest = this.GLOBAL.LEAVEREQUEST
+            if (this.LeaveRequest.length === 0) {
+                this.GetLeaves()
+            }
+        }
+        // if (this.LeaveRequest.length) {
+        //     this.GetLeaves()
+        // }
     },
     methods: {
         CommitLeaveRequest() {
             const outerthis = this;
+
+            const rLoading = this.openLoading()
             axios({
                 method: 'post',
                 url: '/break/askForBreak',
@@ -107,9 +121,11 @@ export default {
                 }
             })
                 .then(function (response) {
+                    rLoading.close()
                     outerthis.showMessage('请假申请提交成功！请等待审核！')
                 })
                 .catch(function (error) {
+                    rLoading.close()
                     outerthis.showMessage(error, '请假申请提交失败！', outerthis)
                 })
         },
@@ -121,6 +137,7 @@ export default {
             })
                 .then(function (response) {
                     outerthis.LeaveRequest = response.data;
+                    outerthis.GLOBAL.LEAVEREQUEST = outerthis.LeaveRequest
                 })
             // allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0,
         },
